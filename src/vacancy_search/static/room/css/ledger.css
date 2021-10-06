@@ -1,0 +1,76 @@
+body {
+    color: black;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", YuGothic, "ヒラギノ角ゴ ProN W3", Hiragino Kaku Gothic ProN, Arial, "メイリオ", Meiryo, sans-serif;
+}
+
+#header .row {
+    padding: 5px;
+}
+
+#contents {
+    padding: 0 20px;
+}
+
+#contents .nowrap {
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+#details .row {
+    padding: 0;
+    border: 0;
+}
+
+#details .col {
+    padding: 2px;
+    border: solid 1px black;
+}
+
+#details .ledger-title {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+
+#details .contact-title{
+    text-align: center;
+}
+
+#images{
+    margin: 10px 0;
+}
+
+#images .row {
+    padding: 0;
+    border: solid 1px black;
+}
+
+#images .col {
+    padding: 2px;
+    border: 0;
+}
+
+#id_map {
+    width: 100%;
+    height: 300px;
+}
+
+#contact{
+    margin: 10px 0;
+}
+
+#contact .row {
+    padding: 0;
+    border: solid 1px black;
+}
+
+#contact .col {
+    padding: 2px;
+    border: 0;
+}
+
+@media print {
+    #header {
+        display: none;
+    }
+}

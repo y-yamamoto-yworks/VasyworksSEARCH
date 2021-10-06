@@ -1,0 +1,340 @@
+{% extends 'vacancy_search/base.html' %}
+{% load static %}
+{% load humanize %}
+
+    {% block head_title %}居住用地図検索{% endblock %}
+    {% block head %}
+        <link rel="stylesheet" href="{% static 'search_map/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'search_map/css/loader.css' %}">
+    {% endblock %}
+
+    {% block page_top %}{% endblock %}
+
+    {% block header %}
+        <div class="row">
+            <div class="col col-12 text-right">
+                <p class="user_info">{{ company.company_name }} : {{ user.last_name }} {{ user.first_name }}</p>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block h1_title %}【居住用地図検索】{{ company.company_name | default_if_none:'' }}{% endblock %}
+
+    {% block contents %}
+        <div id="search-conditions">
+            <div v-if="conditionAreaIsHidden">
+                <button type="button" class="btn-xs btn-outline-info" v-on:click="showConditions($event)">検索条件を表示する</button>
+            </div>
+            <div v-else>
+                <button type="button" class="btn-xs btn-outline-info" v-on:click="hideConditions($event)">検索条件を非表示にする</button>
+                <form action="" method="post" v-on:submit.prevent="submitConditions($event)">
+                    {% csrf_token %}
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>建物種別</th>
+                                <td colspan="11">
+                                    <span class="nowrap"><input type="checkbox" name="building_type" value="10" v-model="buildingTypes">マンション</span>
+                                    <span class="nowrap"><input type="checkbox" name="building_type" value="20" v-model="buildingTypes">アパート</span>
+                                    <span class="nowrap"><input type="checkbox" name="building_type" value="21" v-model="buildingTypes">ハイツ</span>
+                                    <span class="nowrap"><input type="checkbox" name="building_type" value="30" v-model="buildingTypes">戸建</span>
+                                    <span class="nowrap"><input type="checkbox" name="building_type" value="31" v-model="buildingTypes">テラスハウス</span>
+                                    <span class="nowrap"><input type="checkbox" name="building_type" value="40" v-model="buildingTypes">分譲マンション</span>
+                                    <span class="nowrap"><input type="checkbox" name="building_type" value="50" v-model="buildingTypes">店舗付住宅</span>
+                                    <span class="nowrap"><input type="checkbox" name="building_type" value="51" v-model="buildingTypes">住宅付店舗</span>
+                                    <span class="nowrap"><input type="checkbox" name="building_type" value="90" v-model="buildingTypes">その他居住用</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>築年数</th>
+                                <td colspan="3">
+                                    <select name="building_age" v-model="buildingAge">
+                                        <option value="0" selected="selected">指定なし</option>
+                                        <option value="1">1年以内</option>
+                                        <option value="3">3年以内</option>
+                                        <option value="5">5年以内</option>
+                                        <option value="10">10年以内</option>
+                                    </select>
+                                </td>
+                                <th>駐車場</th>
+                                <td colspan="3">
+                                    <input type="checkbox" name="with_garage" v-model="withGarage">駐車場有り
+                                </td>
+                                <th>駐輪場</th>
+                                <td colspan="3">
+                                    <input type="checkbox" name="with_bike_parking" v-model="withBikeParking">駐輪場有り
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>間取り</th>
+                                <td colspan="11">
+                                    <span class="nowrap"><input type="checkbox" name="layout_category" value="10" v-model="layoutCategories">1R/1K/1DK</span>
+                                    <span class="nowrap"><input type="checkbox" name="layout_category" value="20" v-model="layoutCategories">1LDK/2K/2DK</span>
+                                    <span class="nowrap"><input type="checkbox" name="layout_category" value="30" v-model="layoutCategories">2LKD/3K/3DK</span>
+                                    <span class="nowrap"><input type="checkbox" name="layout_category" value="40" v-model="layoutCategories">3LDK/4K/4DK</span>
+                                    <span class="nowrap"><input type="checkbox" name="layout_category" value="50" v-model="layoutCategories">4LDK以上</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>賃料</th>
+                                <td colspan="5">
+                                    <select name="low_rnt" v-model="lowerRent">
+                                        <option value="1">下限なし</option>
+                                        <option value="30000">3万円</option>
+                                        <option value="35000" selected="selected">3.5万円</option>
+                                        <option value="40000">4万円</option>
+                                        <option value="45000">4.5万円</option>
+                                        <option value="50000">5万円</option>
+                                        <option value="55000">5.5万円</option>
+                                        <option value="60000">6万円</option>
+                                        <option value="65000">6.5万円</option>
+                                        <option value="70000">7万円</option>
+                                        <option value="75000">7.5万円</option>
+                                        <option value="80000">8万円</option>
+                                        <option value="85000">8.5万円</option>
+                                        <option value="90000">9万円</option>
+                                        <option value="95000">9.5万円</option>
+                                        <option value="100000">10万円</option>
+                                        <option value="110000">11万円</option>
+                                        <option value="120000">12万円</option>
+                                        <option value="130000">13万円</option>
+                                        <option value="140000">14万円</option>
+                                        <option value="150000">15万円</option>
+                                        <option value="160000">16万円</option>
+                                        <option value="170000">17万円</option>
+                                        <option value="180000">18万円</option>
+                                        <option value="190000">19万円</option>
+                                        <option value="200000">20万円</option>
+                                        <option value="250000">25万円</option>
+                                        <option value="300000">30万円</option>
+                                        <option value="400000">40万円</option>
+                                        <option value="500000">50万円</option>
+                                        <option value="1000000">100万円</option>
+                                    </select>
+                                    ～
+                                    <select name="upp_rnt" v-model="upperRent">
+                                        <option value="0" selected="selected">上限なし</option>
+                                        <option value="35000">3.5万円</option>
+                                        <option value="40000">4万円</option>
+                                        <option value="45000">4.5万円</option>
+                                        <option value="50000">5万円</option>
+                                        <option value="55000">5.5万円</option>
+                                        <option value="60000">6万円</option>
+                                        <option value="65000">6.5万円</option>
+                                        <option value="70000">7万円</option>
+                                        <option value="75000">7.5万円</option>
+                                        <option value="80000">8万円</option>
+                                        <option value="85000">8.5万円</option>
+                                        <option value="90000">9万円</option>
+                                        <option value="95000">9.5万円</option>
+                                        <option value="100000">10万円</option>
+                                        <option value="110000">11万円</option>
+                                        <option value="120000">12万円</option>
+                                        <option value="130000">13万円</option>
+                                        <option value="140000">14万円</option>
+                                        <option value="150000">15万円</option>
+                                        <option value="160000">16万円</option>
+                                        <option value="170000">17万円</option>
+                                        <option value="180000">18万円</option>
+                                        <option value="190000">19万円</option>
+                                        <option value="200000">20万円</option>
+                                        <option value="250000">25万円</option>
+                                        <option value="300000">30万円</option>
+                                        <option value="400000">40万円</option>
+                                        <option value="500000">50万円</option>
+                                        <option value="1000000">100万円</option>
+                                    </select>
+                                    <span class="nowrap"><input type="checkbox" name="include_condo_fees" v-model="includeCondoFees">共益費を含む</span>
+                                </td>
+                                <th>専有面積</th>
+                                <td colspan="5">
+                                    <select name="low_ra" v-model="lowerRoomArea">
+                                        <option value="0" selected="selected">下限なし</option>
+                                        <option value="20">20m2</option>
+                                        <option value="25">25m2</option>
+                                        <option value="30">30m2</option>
+                                        <option value="35">35m2</option>
+                                        <option value="40">40m2</option>
+                                        <option value="45">45m2</option>
+                                        <option value="50">50m2</option>
+                                    </select>
+                                    ～
+                                    <select name="upp_ra" v-model="upperRoomArea">
+                                        <option value="0" selected="selected">上限なし</option>
+                                        <option value="25">25m2</option>
+                                        <option value="30">30m2</option>
+                                        <option value="35">35m2</option>
+                                        <option value="40">40m2</option>
+                                        <option value="45">45m2</option>
+                                        <option value="50">50m2</option>
+                                        <option value="55">55m2</option>
+                                        <option value="60">60m2</option>
+                                        <option value="65">65m2</option>
+                                        <option value="70">70m2</option>
+                                        <option value="75">75m2</option>
+                                        <option value="80">80m2</option>
+                                        <option value="85">85m2</option>
+                                        <option value="90">90m2</option>
+                                        <option value="95">95m2</option>
+                                        <option value="100">100m2</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>部屋向き</th>
+                                <td colspan="7">
+                                    <span class="nowrap"><input type="checkbox" name="direction" value="3" v-model="directions">東</span>
+                                    <span class="nowrap"><input type="checkbox" name="direction" value="4" v-model="directions">南東</span>
+                                    <span class="nowrap"><input type="checkbox" name="direction" value="5" v-model="directions">南</span>
+                                    <span class="nowrap"><input type="checkbox" name="direction" value="6" v-model="directions">南西</span>
+                                    <span class="nowrap"><input type="checkbox" name="direction" value="7" v-model="directions">西</span>
+                                    <span class="nowrap"><input type="checkbox" name="direction" value="8" v-model="directions">北西</span>
+                                    <span class="nowrap"><input type="checkbox" name="direction" value="1" v-model="directions">北</span>
+                                    <span class="nowrap"><input type="checkbox" name="direction" value="2" v-model="directions">北東</span>
+                                </td>
+                                <th>部屋階</th>
+                                <td colspan="3">
+                                    <select name="room_floor" v-model="roomFloor">
+                                        <option value="0" selected="selected">指定なし</option>
+                                        <option value="1">1階のみ</option>
+                                        <option value="2">2階以上</option>
+                                    </select>
+                                    <span class="nowrap"><input type="checkbox" name="top_floor" v-model="topFloor">上階無し</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>設備</th>
+                                <td colspan="11">
+                                    <span class="nowrap"><input type="checkbox" name="separate" v-model="separate">バストイレ別</span>
+                                    <span class="nowrap"><input type="checkbox" name="gas_kitchen" v-model="gasKitchen">ガスキッチン</span>
+                                    <span class="nowrap"><input type="checkbox" name="free_internet" v-model="freeInternet">インターネット無料</span>
+                                    <span class="nowrap"><input type="checkbox" name="indoor_washer" v-model="indoorWasher">室内洗濯機設置可</span>
+                                    <span class="nowrap"><input type="checkbox" name="aircon" v-model="aircon">エアコン</span>
+                                    <span class="nowrap"><input type="checkbox" name="washstand" v-model="washstand">独立洗面台</span>
+                                    <span class="nowrap"><input type="checkbox" name="washing_toilet" v-model="washingToilet">温水洗浄便座</span>
+                                    <span class="nowrap"><input type="checkbox" name="delivery_box" v-model="deliveryBox">宅配ボックス</span>
+                                    <span class="nowrap"><input type="checkbox" name="auto_lock" v-model="autoLock">オートロック</span>
+                                    <span class="nowrap"><input type="checkbox" name="elevator" v-model="elevator">エレベータ</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>条件</th>
+                                <td colspan="11">
+                                    <span class="nowrap"><input type="checkbox" name="pet" v-model="pet">ペット可</span>
+                                    <span class="nowrap"><input type="checkbox" name="instrument" v-model="instrument">楽器可</span>
+                                    <span class="nowrap"><input type="checkbox" name="live_together" v-model="liveTogether">同居可</span>
+                                    <span class="nowrap"><input type="checkbox" name="room_share" v-model="roomShare">ルームシェア可</span>
+                                    <span class="nowrap"><input type="checkbox" name="new_student" v-model="newStudent">新入生予約可</span>
+                                    <span class="nowrap"><input type="checkbox" name="non_japanese" v-model="nonJapanese">外国人可</span>
+                                    <span class="nowrap"><input type="checkbox" name="office_use" v-model="officeUse">事務所利用可</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>その他</th>
+                                <td colspan="11">
+                                    <span class="nowrap"><input type="checkbox" name="only_own" v-model="onlyOwn">自社物件のみ</span>
+                                    <span class="nowrap"><input type="checkbox" name="for_rent" v-model="forRent">募集中物件のみ</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="btn-box">
+                        <button type="submit" class="btn btn-primary">この条件で検索する</button>
+                        <button type="submit" class="btn btn-outline-secondary" v-on:click="clearConditions($event)">条件をクリアする</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if lat > 0 and lng > 0 %}
+        <div id="search-map">
+            <div id="id_map">
+                <l-map
+                        :zoom="zoom"
+                        :center="center"
+                            @update:bounds="updateBounds"
+                            @update:zoom="updateZoom"
+                            :options="{scrollWheelZoom:false, preferCanvas:true}">
+                    <div v-show="mapLoading" class="loader">Loading...</div>
+                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                    <l-marker v-for="building in mapBuildings" :key="building.linkId" :lat-lng="building.latLng" :icon="building.icon" @click="mapMarkerClick(building)">
+                        <div v-show="mapLoading">
+                            <l-popup>
+                                <table class="popup">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2" class="building-name">
+                                                <a v-bind:href="building.linkUrl" target="_blank">[[ building.buildingName ]]</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="building-address">[[ building.address ]]</td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="8" class="building-image" >
+                                                <a v-bind:href="building.linkUrl" target="_blank">
+                                                    <img v-if="building.mapImage" v-bind:src="building.mapImage" class="img-fluid" alt="写真">
+                                                    <div v-else class="no-image">No Image</div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr><td class="building-item">【賃料】[[ building.rent ]]</td></tr>
+                                        <tr><td class="building-item">【間取り】[[ building.layout ]]</td></tr>
+                                        <tr><td class="building-item">[[building.building_type]] [[ building.building_floors ]]階建</td></tr>
+                                        <tr><td class="building-item">[[ building.build_year_month ]] 総戸数:[[ building.building_rooms ]]戸</td></tr>
+                                        <tr><td class="building-item">[[ building.structure ]]</td></tr>
+                                        <tr><td class="building-item">駐車場:[[ building.garage_type ]]</td></tr>
+                                        <tr><td class="building-item">駐輪場:[[ building.bike_parking_type ]]</td></tr>
+                                    </tbody>
+                                </table>
+                            </l-popup>
+                        </div>
+                    </l-marker>
+                </l-map>
+            </div>
+            <div v-if="message" class="message">[[ message ]]</div>
+        </div>
+        <div id="search-list">
+            <div class="row">
+                <div v-for="building in buildings" class="col col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="list-box">
+                        <div class="building-name"><a v-bind:href="building.linkUrl" target="_blank">[[ building.buildingName ]]</a></div>
+                        <div class="building-address">[[ building.address ]]</div>
+                        <div class="building-image">
+                            <a v-bind:href="building.linkUrl" target="_blank">
+                                <img v-if="building.mapImage" v-bind:src="building.mapImage" class="img-fluid" alt="写真">
+                                <div v-else class="no-image"><span>No Image</span></div>
+                            </a>
+                        </div>
+                        <div class="building-item">【賃料】[[ building.rent ]]</div>
+                        <div class="building-item">【間取り】[[ building.layout ]]</div>
+                        <div class="building-item">[[building.building_type]] [[ building.building_floors ]]階建</div>
+                        <div class="building-item">[[ building.build_year_month ]] 総戸数:[[ building.building_rooms ]]戸</div>
+                        <div class="building-item">[[ building.structure ]]</div>
+                        <div class="building-item">駐車場:[[ building.garage_type ]]</div>
+                        <div class="building-item">駐輪場:[[ building.bike_parking_type ]]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endblock %}
+
+    {% block footer %}
+        <a href="{% url 'logout' %}" class="btn btn-secondary">ログアウト</a>
+    {% endblock %}
+
+    {% block page_bottom %}
+        <link rel="stylesheet" href="{% static 'lib/leaflet/leaflet.css' %}" />
+        <script src="{% static 'lib/leaflet/leaflet.js' %}"></script>
+        <script src="{% static 'lib/vue2-leaflet/vue2-leaflet.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'search_map/js/residential.js' %}"></script>
+        <script type="text/javascript">
+            var app = createResidentialSearchMapVue(
+                "{{ api_key }}",
+                17,
+                {{ lat }},
+                {{ lng }},
+            );
+        </script>
+    {% endblock %}

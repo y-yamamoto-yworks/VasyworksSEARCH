@@ -1,0 +1,55 @@
+{% extends 'vacancy_search/base.html' %}
+{% load static %}
+{% load humanize %}
+
+    {% block head_title %}月極駐車場地図検索インデックス{% endblock %}
+    {% block head %}
+        <link rel="stylesheet" href="{% static 'search_map/css/style.css' %}">
+    {% endblock %}
+
+    {% block page_top %}{% endblock %}
+
+    {% block header %}
+        <div class="row">
+            <div class="col col-12 text-right">
+                <p class="user_info">{{ company.company_name }} : {{ user.last_name }} {{ user.first_name }}</p>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block h1_title %}【月極駐車場地図検索】{{ company.company_name | default_if_none:'' }}{% endblock %}
+
+    {% block contents %}
+        {% if cities|length > 0 %}
+         <div id="city-list">
+            {% for city in cities %}
+            <div class="city">
+                <div class="row">
+                    <div class="col col-12">
+                        <a href="{% url 'search_map_garage_map' %}?lat={{ city.lat }}&lng={{ city.lng }}" class="btn btn-block btn-primary">
+                            <span class="city-name">{{ city.name }}</span><img src="{% static 'search_map/images/map_icon.png' %}">
+                        </a>
+                    </div>
+                </div>
+                {% if city.pointed_areas|length > 0 %}
+                <div class="row">
+                    <div class="col col-12">
+                        <div class="areas">
+                        {% for area in city.pointed_areas %}
+                            <a href="{% url 'search_map_garage_map' %}?lat={{ area.lat }}&lng={{ area.lng }}" class="btn btn-outline-primary">{{ area.name }}</a>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endblock %}
+
+    {% block footer %}
+        <a href="{% url 'logout' %}" class="btn btn-secondary">ログアウト</a>
+    {% endblock %}
+
+    {% block page_bottom %}{% endblock %}

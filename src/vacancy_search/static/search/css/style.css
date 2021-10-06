@@ -1,0 +1,19 @@
+#search-conditions-form {
+    padding: 0 30px;
+}
+
+#data-list {
+    padding: 0 20px 10px 20px;
+}
+
+#data-list .row {
+    border: 0px;
+}
+
+#data-list .col {
+    border: solid 1px black;
+}
+
+#data-list .number {
+    text-align: right;
+}

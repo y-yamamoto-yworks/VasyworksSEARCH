@@ -1,0 +1,176 @@
+{% extends 'vacancy_search/base.html' %}
+{% load static %}
+{% load humanize %}
+
+    {% block head_title %}月極駐車場地図検索{% endblock %}
+    {% block head %}
+        <link rel="stylesheet" href="{% static 'search_map/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'search_map/css/loader.css' %}">
+    {% endblock %}
+
+    {% block page_top %}{% endblock %}
+
+    {% block header %}
+        <div class="row">
+            <div class="col col-12 text-right">
+                <p class="user_info">{{ company.company_name }} : {{ user.last_name }} {{ user.first_name }}</p>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block h1_title %}【月極駐車場地図検索】{{ company.company_name | default_if_none:'' }}{% endblock %}
+
+    {% block contents %}
+        <div id="search-conditions">
+            <div v-if="conditionAreaIsHidden">
+                <button type="button" class="btn-xs btn-outline-info" v-on:click="showConditions($event)">検索条件を表示する</button>
+            </div>
+            <div v-else>
+                <button type="button" class="btn-xs btn-outline-info" v-on:click="hideConditions($event)">検索条件を非表示にする</button>
+                <form action="" method="post" v-on:submit.prevent="submitConditions($event)">
+                    {% csrf_token %}
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>駐車料</th>
+                                <td>
+                                    <select name="low_fee" v-model="lowerGarageFee">
+                                        <option value="0" selected="selected">下限なし</option>
+                                        <option value="5000">0.5万円</option>
+                                        <option value="10000">1万円</option>
+                                        <option value="15000">1.5万円</option>
+                                        <option value="20000">2万円</option>
+                                        <option value="25000">2.5万円</option>
+                                        <option value="30000">3万円</option>
+                                        <option value="35000">3.5万円</option>
+                                        <option value="40000">4万円</option>
+                                        <option value="45000">4.5万円</option>
+                                        <option value="50000">5万円</option>
+                                        <option value="60000">6万円</option>
+                                        <option value="70000">7万円</option>
+                                        <option value="80000">8万円</option>
+                                        <option value="90000">9万円</option>
+                                        <option value="100000">10万円</option>
+                                        <option value="150000">15万円</option>
+                                        <option value="200000">20万円</option>
+                                    </select>
+                                    ～
+                                    <select name="upp_fee" v-model="upperGarageFee">
+                                        <option value="0" selected="selected">上限なし</option>
+                                        <option value="10000">1万円</option>
+                                        <option value="15000">1.5万円</option>
+                                        <option value="20000">2万円</option>
+                                        <option value="25000">2.5万円</option>
+                                        <option value="30000">3万円</option>
+                                        <option value="35000">3.5万円</option>
+                                        <option value="40000">4万円</option>
+                                        <option value="45000">4.5万円</option>
+                                        <option value="50000">5万円</option>
+                                        <option value="60000">6万円</option>
+                                        <option value="70000">7万円</option>
+                                        <option value="80000">8万円</option>
+                                        <option value="90000">9万円</option>
+                                        <option value="100000">10万円</option>
+                                        <option value="150000">15万円</option>
+                                        <option value="200000">20万円</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>その他</th>
+                                <td>
+                                    <span class="nowrap"><input type="checkbox" name="only_own" v-model="onlyOwn">自社物件のみ</span>
+                                    <span class="nowrap"><input type="checkbox" name="for_rent" v-model="forRent">募集中物件のみ</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="btn-box">
+                        <button type="submit" class="btn btn-primary">この条件で検索する</button>
+                        <button type="submit" class="btn btn-outline-secondary" v-on:click="clearConditions($event)">条件をクリアする</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if lat > 0 and lng > 0 %}
+        <div id="search-map">
+            <div id="id_map">
+                <l-map
+                        :zoom="zoom"
+                        :center="center"
+                            @update:bounds="updateBounds"
+                            @update:zoom="updateZoom"
+                            :options="{scrollWheelZoom:false, preferCanvas:true}">
+                    <div v-show="mapLoading" class="loader">Loading...</div>
+                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                    <l-marker v-for="garage in mapGarages" :key="garage.linkId" :lat-lng="garage.latLng" :icon="garage.icon" @click="mapMarkerClick(garage)">
+                        <div v-show="mapLoading">
+                            <l-popup>
+                                <table class="popup">
+                                    <tbody>
+                                        <tr>
+                                            <td class="garage-name">
+                                                <a v-bind:href="garage.linkUrl" target="_blank">[[ garage.garageName ]]</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="garage-address">[[ garage.address ]]</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="garage-image" >
+                                                <a v-bind:href="garage.linkUrl" target="_blank">
+                                                    <img v-if="garage.mapImage" v-bind:src="garage.mapImage" class="img-fluid" alt="写真">
+                                                    <div v-else class="no-image"><span>No Image</span></div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr><td class="garage-item">【駐車料】[[ garage.garage_fee ]]</td></tr>
+                                    </tbody>
+                                </table>
+                            </l-popup>
+                        </div>
+                    </l-marker>
+                </l-map>
+            </div>
+            <div v-if="message" class="message">[[ message ]]</div>
+        </div>
+        <div id="search-list">
+            <div class="row">
+                <div v-for="garage in garages" class="col col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="list-box">
+                        <div class="garage-name"><a v-bind:href="garage.linkUrl" target="_blank">[[ garage.garageName ]]</a></div>
+                        <div class="garage-address">[[ garage.address ]]</div>
+                        <div class="garage-image">
+                            <a v-bind:href="garage.linkUrl" target="_blank">
+                                <img v-if="garage.mapImage" v-bind:src="garage.mapImage" class="img-fluid" alt="写真">
+                                <div v-else class="no-image"><span>No Image</span></div>
+                            </a>
+                        </div>
+                        <div class="garage-item">【駐車料】[[ garage.garage_fee ]]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    {% endblock %}
+
+    {% block footer %}
+        <a href="{% url 'logout' %}" class="btn btn-secondary">ログアウト</a>
+    {% endblock %}
+
+    {% block page_bottom %}
+        <link rel="stylesheet" href="{% static 'lib/leaflet/leaflet.css' %}" />
+        <script src="{% static 'lib/leaflet/leaflet.js' %}"></script>
+        <script src="{% static 'lib/vue2-leaflet/vue2-leaflet.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'search_map/js/garage.js' %}"></script>
+        <script type="text/javascript">
+            var app = createGarageSearchMapVue(
+                "{{ api_key }}",
+                17,
+                {{ lat }},
+                {{ lng }},
+            );
+        </script>
+    {% endblock %}

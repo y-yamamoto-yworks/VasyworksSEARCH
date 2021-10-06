@@ -1,0 +1,66 @@
+{% extends 'vacancy_search/base.html' %}
+{% load static %}
+{% load humanize %}
+
+    {% block head_title %}建物名称検索{% endblock %}
+    {% block head %}
+        <link rel="stylesheet" href="{% static 'search/css/style.css' %}">
+    {% endblock %}
+
+    {% block header %}{% endblock %}
+
+    {% block h1_title %}建物名称検索{% endblock %}
+
+    {% block contents %}
+        <div id="search-conditions-form">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <div class="col col-3 col-md-2  col-form-label"><label class="float-right">建物名称</label></div>
+                    <div class="col-5 col-md-7">{{ form.building_name }}</div>
+                    <div class="col-4 col-md-3">
+                        <input type="submit" value="検索" class="btn btn-primary">
+                        <input type="button" value="クリア" v-on:click="clearConditions($event)" class="btn btn-secondary">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if is_searched %}
+        <div class="list-count">全 {{ buildings.count | default_if_none:'0' }} 件</div>
+        {% if buildings %}
+        <div id="data-list">
+            <div class="row">
+                <div class="col col-2 col-md-1 text-center">建物ID</div>
+                <div class="col col-4 col-md-4 text-center">建物名称</div>
+                <div class="col col-6 col-md-7 text-center">住所</div>
+            </div>
+            {% for item in buildings %}
+            <div class="row">
+                <div class="col col-2 col-md-1">
+                    <div class="small number">{{ item.id }}</div>
+                </div>
+                <div class="col col-4 col-md-4">
+                    <div><a href="{% url 'building_building' item.oid %}" target="_blank">{{ item.building_name }}</a></div>
+                    {% if item.building_old_name %}<div class="small">旧:&nbsp;{{ item.building_old_name }}</div>{% endif %}
+                </div>
+                <div class="col col-6 col-md-7">
+                    <div class="small">{{ item.address }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>該当する建物はありません。</p>
+        {% endif %}
+        </div>
+        {% endif %}
+    {% endblock %}
+
+    {% block footer %}
+        <script type="text/javascript" src="{% static 'search/js/search_building_name.js' %}"></script>
+        <script type="text/javascript">
+            var searchApp = createSearchBuildingNameVue(
+                "{{ searched_building_name | default_if_none:'' }}"
+            );
+        </script>
+    {% endblock %}

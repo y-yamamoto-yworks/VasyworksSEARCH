@@ -1,0 +1,67 @@
+html {
+    height: 100%;
+}
+
+body{
+    color: #333333;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", YuGothic, "ヒラギノ角ゴ ProN W3", Hiragino Kaku Gothic ProN, Arial, "メイリオ", Meiryo, sans-serif;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    width: 100%;
+    padding-top: 10px;
+    text-align: center;
+    background-color: lightgray;
+    color: white;
+}
+
+#container {
+    padding: 70px 15px 200px 15px;
+    flex: 1;
+}
+
+#container  .col,
+#container  [class*="col-"] {
+    padding: 5px;
+}
+
+#header div.system_title {
+    font-size: 18px;
+    color: #000000;
+}
+
+#header p.user_info {
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+#navigation-bar {
+    margin-bottom: 20px;
+}
+
+#messages {
+    color: red;
+}
+
+h1.h1_title {
+    font-size: 24px;
+}
+
+#contents .nowrap {
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+#contents .notice-message {
+    color: red;
+    text-align: center;
+}
+
+@media print {
+    .no-printing {
+        display: none;
+    }
+}

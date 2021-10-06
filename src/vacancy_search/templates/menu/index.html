@@ -1,0 +1,43 @@
+{% extends 'vacancy_search/base.html' %}
+{% load static %}
+{% load humanize %}
+
+    {% block head_title %}空室検索 メニュー{% endblock %}
+    {% block head %}
+        <link rel="stylesheet" href="{% static 'menu/css/style.css' %}">
+    {% endblock %}
+
+    {% block page_top %}{% endblock %}
+
+    {% block header %}
+        <div class="row">
+            <div class="col col-12 text-right">
+                <p class="user_info">{{ company.company_name }} : {{ user.last_name }} {{ user.first_name }}</p>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block h1_title %}【メニュー】{{ company.company_name | default_if_none:'' }}{% endblock %}
+
+    {% block contents %}
+       <div id="search-map-menu">
+            <div class="menu-group">
+                <h2>【地図検索】</h2>
+                <a href="{% url 'search_map_residential_index' %}" class="btn btn-primary">居住用</a>
+                <a href="{% url 'search_map_non_residential_index' %}" class="btn btn-primary">非居住用</a>
+                <a href="{% url 'search_map_garage_index' %}" class="btn btn-primary">月極駐車場</a>
+            </div>
+            <div class="menu-group">
+                <h2>【その他検索】</h2>
+                <a href="{% url 'search_building_name' %}" class="btn btn-primary">建物名称検索</a>
+                <a href="{% url 'search_building_id' %}" class="btn btn-primary">建物ID検索</a>
+                <a href="{% url 'search_building_code' %}" class="btn btn-primary">建物コード検索</a>
+            </div>
+       </div>
+    {% endblock %}
+
+    {% block footer %}
+        <a href="{% url 'logout' %}" class="btn btn-secondary">ログアウト</a>
+    {% endblock %}
+
+    {% block page_bottom %}{% endblock %}
