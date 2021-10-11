@@ -98,7 +98,7 @@
                     <div class="col col-6 col-md-3">
                         <div class="small">
                             （駐車場）
-                            {% if building.garages %}<a href="{% url 'building_garage_list' building.oid%}" target="_blank" class="btn btn-sm btn-outline-primary">駐車場詳細</a>{% endif %}
+                            {% if building.garages %}<a href="{% url 'building_garage_list' building.oid%}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary">駐車場詳細</a>{% endif %}
                         </div>
                         <div class="small">
                             <span id="id_garage">{{ building.garage_type.name }}</span>
@@ -201,7 +201,7 @@
                             {% for room in building.all_rooms %}
                                 <tr class="room{% if room.room_status.is_pending %} is-pending no-printing{% elif not room.room_status.for_rent %} no-for-rent no-printing{% elif room.is_high_auth_level %} high-level no-printing{% endif %}">
                                     <td class="room-no">
-                                        <a name="link_room" href="{% url 'room_room' room.oid %}" target="_blank" class="btn btn-outline-primary link-room">{{ room.room_no }}</a>
+                                        <a name="link_room" href="{% url 'room_room' room.oid %}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary link-room">{{ room.room_no }}</a>
                                     </td>
                                     <td class="rental-type">
                                         {{ room.rental_type_text }}
@@ -306,7 +306,7 @@
             <div class="row">
             {% for panorama in building.panoramas %}
                 <div class="col col-3">
-                    <a href="{% url 'panorama_building_panorama' panorama.idb64 %}" target="_blank">{{ panorama.panorama_type.name }}</a>
+                    <a href="{% url 'panorama_building_panorama' panorama.idb64 %}" target="_blank" rel="noopener noreferrer">{{ panorama.panorama_type.name }}</a>
                 </div>
             {% endfor %}
             </div>
@@ -321,7 +321,7 @@
             <div class="row">
             {% for movie in building.movies %}
                 <div class="col col-3">
-                    <a href="{% url 'movie_building_movie' movie.idb64 %}" target="_blank">{{ movie.movie_type.name }}</a>
+                    <a href="{% url 'movie_building_movie' movie.idb64 %}" target="_blank" rel="noopener noreferrer">{{ movie.movie_type.name }}</a>
                 </div>
             {% endfor %}
             </div>
@@ -336,7 +336,7 @@
             <div class="row">
             {% for file in building.files %}
                 <div class="col col-3">
-                    <a href="{{ file.cache_file_url }}" target="_blank">{{ file.file_title }}</a>
+                    <a href="{{ file.cache_file_url }}" target="_blank" rel="noopener noreferrer">{{ file.file_title }}</a>
                 </div>
             {% endfor %}
             </div>

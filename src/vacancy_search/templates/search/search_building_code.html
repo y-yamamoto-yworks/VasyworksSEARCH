@@ -41,7 +41,7 @@
                     <div class="small">{{ item.building_code }}</div>
                 </div>
                 <div class="col col-4 col-md-4">
-                    <div><a href="{% url 'building_building' item.oid %}" target="_blank">{{ item.building_name }}</a></div>
+                    <div><a href="{% url 'building_building' item.oid %}" target="_blank" rel="noopener noreferrer">{{ item.building_name }}</a></div>
                     {% if item.building_old_name %}<div class="small">旧:&nbsp;{{ item.building_old_name }}</div>{% endif %}
                 </div>
                 <div class="col col-5 col-md-6">

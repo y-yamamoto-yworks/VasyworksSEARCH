@@ -222,7 +222,7 @@
                                     <tbody>
                                         <tr>
                                             <td colspan="2" class="building-name">
-                                                <a v-bind:href="building.linkUrl" target="_blank">[[ building.buildingName ]]</a>
+                                                <a v-bind:href="building.linkUrl" target="_blank" rel="noopener noreferrer">[[ building.buildingName ]]</a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -230,7 +230,7 @@
                                         </tr>
                                         <tr>
                                             <td rowspan="8" class="building-image" >
-                                                <a v-bind:href="building.linkUrl" target="_blank">
+                                                <a v-bind:href="building.linkUrl" target="_blank" rel="noopener noreferrer">
                                                     <img v-if="building.mapImage" v-bind:src="building.mapImage" class="img-fluid" alt="写真">
                                                     <div v-else class="no-image">No Image</div>
                                                 </a>
@@ -256,10 +256,10 @@
             <div class="row">
                 <div v-for="building in buildings" class="col col-12 col-sm-6 col-lg-4 col-xl-3">
                     <div class="list-box">
-                        <div class="building-name"><a v-bind:href="building.linkUrl" target="_blank">[[ building.buildingName ]]</a></div>
+                        <div class="building-name"><a v-bind:href="building.linkUrl" target="_blank" rel="noopener noreferrer">[[ building.buildingName ]]</a></div>
                         <div class="building-address">[[ building.address ]]</div>
                         <div class="building-image">
-                            <a v-bind:href="building.linkUrl" target="_blank">
+                            <a v-bind:href="building.linkUrl" target="_blank" rel="noopener noreferrer">
                                 <img v-if="building.mapImage" v-bind:src="building.mapImage" class="img-fluid" alt="写真">
                                 <div v-else class="no-image"><span>No Image</span></div>
                             </a>

@@ -179,7 +179,7 @@
             <div class="row">
             {% for panorama in garage.panoramas %}
                 <div class="col col-3">
-                    <a href="{% url 'panorama_building_panorama' panorama.idb64 %}" target="_blank">{{ panorama.panorama_type.name }}</a>
+                    <a href="{% url 'panorama_building_panorama' panorama.idb64 %}" target="_blank" rel="noopener noreferrer">{{ panorama.panorama_type.name }}</a>
                 </div>
             {% endfor %}
             </div>
@@ -194,7 +194,7 @@
             <div class="row">
             {% for movie in garage.movies %}
                 <div class="col col-3">
-                    <a href="{% url 'movie_building_movie' movie.idb64 %}" target="_blank">{{ movie.movie_type.name }}</a>
+                    <a href="{% url 'movie_building_movie' movie.idb64 %}" target="_blank" rel="noopener noreferrer">{{ movie.movie_type.name }}</a>
                 </div>
             {% endfor %}
             </div>
@@ -209,7 +209,7 @@
             <div class="row">
             {% for file in garage.files %}
                 <div class="col col-3">
-                    <a href="{{ file.cache_file_url }}" target="_blank">{{ file.file_title }}</a>
+                    <a href="{{ file.cache_file_url }}" target="_blank" rel="noopener noreferrer">{{ file.file_title }}</a>
                 </div>
             {% endfor %}
             </div>
