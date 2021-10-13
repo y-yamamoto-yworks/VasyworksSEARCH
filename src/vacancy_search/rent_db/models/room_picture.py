@@ -85,35 +85,13 @@ class RoomPicture(models.Model):
 
     @property
     def cache_file_url(self):
-        """キャッシュファイルのURLの取得"""
-        url = None
-
-        auth_user = self.room.building.auth_user
-        if auth_user:
-            cache_file_name = None
-            cache_file_size = None
-            water_mark = Company.get_instance().water_mark
-            if auth_user.is_company or auth_user.allow_org_image:
-                cache_file_name = self.cache_name_org
-                cache_file_size = settings.ORIGINAL_IMAGE_SIZE
-                water_mark = None
-            elif auth_user.level.level >= settings.LARGE_IMAGE_LEVEL:
-                cache_file_name = self.cache_name_l
-                cache_file_size = settings.LARGE_IMAGE_SIZE
-            elif auth_user.level.level >= settings.MEDIUM_IMAGE_LEVEL:
-                cache_file_name = self.cache_name_m
-                cache_file_size = settings.MEDIUM_IMAGE_SIZE
-            elif auth_user.level.level >= settings.SMALL_IMAGE_LEVEL:
-                cache_file_name = self.cache_name_s
-                cache_file_size = settings.SMALL_IMAGE_SIZE
-
-            if cache_file_name and cache_file_size:
-                url = CacheFileHelper.get_property_image_file_url(
-                    self.room.building.file_oid,
-                    self.file_name,
-                    cache_file_name,
-                    water_mark,
-                    cache_file_size
-                )
+        """キャッシュファイルのURLの取得（大サイズ）"""
+        url = CacheFileHelper.get_property_image_file_url(
+            self.room.building.file_oid,
+            self.file_name,
+            self.cache_name_l,
+            Company.get_instance().water_mark,
+            settings.LARGE_IMAGE_SIZE
+        )
 
         return url

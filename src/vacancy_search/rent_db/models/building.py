@@ -453,21 +453,18 @@ class Building(models.Model):
     @property
     def movies(self):
         return self.building_movies.filter(
-            is_publish_vacancy=True,
             is_deleted=False,
         ).order_by('priority', 'movie_type__priority', 'id').all()
 
     @property
     def panoramas(self):
         return self.building_panoramas.filter(
-            is_publish_vacancy=True,
             is_deleted=False,
         ).order_by('priority', 'panorama_type__priority', 'id').all()
 
     @property
     def pictures(self):
         return self.building_pictures.filter(
-            is_publish_vacancy=True,
             is_deleted=False,
         ).order_by('priority', 'picture_type__priority', 'id').all()
 

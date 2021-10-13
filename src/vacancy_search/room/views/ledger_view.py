@@ -72,29 +72,19 @@ class LedgerView(TemplateView):
                     self.equipments += '・'
                 self.equipments += item.equipment.name
 
-            building_pictures = BuildingPicture.objects.filter(
-                building=self.room.building,
-                is_deleted=False,
-            ).order_by('priority', 'picture_type__priority', 'id').all()
-
-            for item in building_pictures:
+            for item in self.room.building.pictures:
                 if item.picture_type.is_building_exterior:
                     self.building_image = item
                     self.building_image.building.auth_user = self.user
                     break
 
-            room_pictures = RoomPicture.objects.filter(
-                room=self.room,
-                is_deleted=False,
-            ).order_by('priority', 'picture_type__priority', 'id').all()
-
-            for item in room_pictures:
+            for item in self.room.pictures:
                 if item.picture_type.is_layout:
                     self.layout_image = item
                     self.layout_image.room.building.auth_user = self.user
                     break
 
-            for item in room_pictures:
+            for item in self.room.pictures:
                 if item.picture_type.is_room and not item.picture_type.is_layout:
                     self.room_image = item
                     self.room_image.room.building.auth_user = self.user

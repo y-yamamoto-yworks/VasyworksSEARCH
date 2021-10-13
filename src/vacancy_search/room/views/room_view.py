@@ -51,10 +51,7 @@ class RoomView(TemplateView):
         self.company = Company.get_instance()
 
         oid = kwargs['oid']
-        today = timezone.now().date().strftime('%Y-%m-%d')
         conditions = Q(oid=oid)
-        # 未着手
-        # conditions.add(Room.get_vacancy_room_condition(self.user, False, False), Q.AND)
         self.room = get_object_or_404(Room, conditions)
         self.room.building.auth_user = self.user
 
