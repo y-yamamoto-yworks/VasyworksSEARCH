@@ -5,6 +5,7 @@
     {% block head_title %}空室検索 メニュー{% endblock %}
     {% block head %}
         <link rel="stylesheet" href="{% static 'menu/css/style.css' %}">
+        <link href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet">
     {% endblock %}
 
     {% block page_top %}{% endblock %}
@@ -22,16 +23,88 @@
     {% block contents %}
        <div id="search-map-menu">
             <div class="menu-group">
-                <h2>【地図検索】</h2>
-                <a href="{% url 'search_map_residential_index' %}" class="btn btn-primary">居住用</a>
-                <a href="{% url 'search_map_non_residential_index' %}" class="btn btn-primary">非居住用</a>
-                <a href="{% url 'search_map_garage_index' %}" class="btn btn-primary">月極駐車場</a>
+                <div class="row">
+                    <div class="col col-12">
+                        <h2>【地図検索】</h2>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="card">
+                            <div class="card-header text-center"><i class="fas fa-map-marked-alt"></i> 居住用</div>
+                            <div class="card-body">
+                                <div>こちらでは居住用の物件を地図で検索できます。</div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{% url 'search_map_residential_index' %}" class="btn btn-primary"><i class="fas fa-search"></i> 検索</a>
+                            </div>
+                       </div>
+                    </div>
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="card">
+                            <div class="card-header text-center"><i class="fas fa-map-marked-alt"></i> 非居住用</div>
+                            <div class="card-body">
+                                <div>こちらではテナント等の非居住用の物件を地図で検索できます。</div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{% url 'search_map_non_residential_index' %}" class="btn btn-primary"><i class="fas fa-search"></i> 検索</a>
+                            </div>
+                       </div>
+                    </div>
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="card">
+                            <div class="card-header text-center"><i class="fas fa-map-marked-alt"></i> 月極駐車場</div>
+                            <div class="card-body">
+                                <div>こちらでは月極駐車場を地図で検索できます。</div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{% url 'search_map_garage_index' %}" class="btn btn-primary"><i class="fas fa-search"></i> 検索</a>
+                            </div>
+                       </div>
+                    </div>
+                </div>
             </div>
             <div class="menu-group">
-                <h2>【その他検索】</h2>
-                <a href="{% url 'search_building_name' %}" class="btn btn-primary">建物名称検索</a>
-                <a href="{% url 'search_building_id' %}" class="btn btn-primary">建物ID検索</a>
-                <a href="{% url 'search_building_code' %}" class="btn btn-primary">建物コード検索</a>
+                <div class="row">
+                    <div class="col col-12">
+                        <h2>【その他検索】</h2>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="card">
+                            <div class="card-header text-center"><i class="fas fa-building"></i> 建物名称検索</div>
+                            <div class="card-body">
+                                <div>こちらでは建物の名称の部分一致での建物の検索ができます。</div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{% url 'search_building_name' %}" class="btn btn-primary"><i class="fas fa-search"></i> 検索</a>
+                            </div>
+                       </div>
+                    </div>
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="card">
+                            <div class="card-header text-center"><i class="fas fa-building"></i> 建物ID検索</div>
+                            <div class="card-body">
+                                <div>こちらでは建物IDでの建物の検索ができます。</div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{% url 'search_building_id' %}" class="btn btn-primary"><i class="fas fa-search"></i> 検索</a>
+                            </div>
+                       </div>
+                    </div>
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="card">
+                            <div class="card-header text-center"><i class="fas fa-building"></i> 建物コード検索</div>
+                            <div class="card-body">
+                                <div>こちらでは建物コードでの建物の検索ができます。</div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{% url 'search_building_code' %}" class="btn btn-primary"><i class="fas fa-search"></i> 検索</a>
+                            </div>
+                       </div>
+                    </div>
+                </div>
             </div>
        </div>
     {% endblock %}
