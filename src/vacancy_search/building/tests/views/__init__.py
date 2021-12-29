@@ -1,0 +1,2 @@
+from .test_building_garage_list_view import BuildingGarageListViewTest
+from .test_building_view import BuildingViewTest
