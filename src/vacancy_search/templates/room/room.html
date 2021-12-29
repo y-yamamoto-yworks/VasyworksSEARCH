@@ -72,7 +72,6 @@
                             <span id="id_rent">{{ room.trader_rent_text | default_if_none:'' }}</span>
                         {% else %}
                             <span id="id_rent">{{ room.rent_text | default_if_none:'' }}</span>
-                            {% if room.rent_upper_text %} ～ <span id="id_rent_upper">{{ room.rent_upper_text }}</span>{% endif %}
                         {% endif %}
                         </div>
                         <div>{{ condo_fees_name }}: <span id="id_condo_fees">{{ room.condo_fees_text | default_if_none:'' }}</span></div>

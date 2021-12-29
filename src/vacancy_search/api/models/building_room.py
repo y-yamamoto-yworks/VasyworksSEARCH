@@ -587,6 +587,7 @@ class BuildingRoom(models.Model):
             ans += ' AND rental_type.is_residential = TRUE'
         else:
             ans += ' AND rental_type.is_non_residential = TRUE'
+        ans += ' INNER JOIN pet_type on room.pet_type_id = pet_type.id'
 
         if conditions:
             # 管理種別の限定有無
