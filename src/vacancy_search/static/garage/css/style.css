@@ -33,7 +33,6 @@
 
 #details .col {
     border: solid 1px darkslategray;
-    padding: 5px 5px;
 }
 
 #details .annotation {
@@ -45,7 +44,7 @@
 #building-map {
     border: solid 1px darkslategray;
     margin: 10px;
-    padding: 0 15px 5px 15px;
+    padding: 0 12px;
 }
 
 #building-map .map-title {
@@ -64,7 +63,7 @@
 #image-list {
     border: solid 1px darkslategray;
     margin: 10px;
-    padding: 0 15px;
+    padding: 0 12px;
 }
 
 #image-list .image-list-title {
@@ -83,7 +82,7 @@
 #panorama-list {
     border: solid 1px darkslategray;
     margin: 10px;
-    padding: 0 15px;
+    padding: 0 12px;
 }
 
 #panorama-list .panorama-list-title {
@@ -97,7 +96,7 @@
 #movie-list {
     border: solid 1px darkslategray;
     margin: 10px;
-    padding: 0 15px;
+    padding: 0 12px;
 }
 
 #movie-list .movie-list-title {
@@ -111,7 +110,7 @@
 #file-list {
     border: solid 1px darkslategray;
     margin: 10px;
-    padding: 0 15px;
+    padding: 0 12px;
 }
 
 #file-list .file-list-title {
@@ -149,7 +148,6 @@
 
 #garage-list .col {
     border: solid 1px darkslategray;
-    padding: 5px 5px;
 }
 
 #garage-list .title {

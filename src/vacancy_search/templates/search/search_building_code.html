@@ -15,11 +15,15 @@
         <div id="search-conditions-form">
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="form-group row">
-                    <div class="col col-3 col-sm-3 col-md-2 col-form-label"><label class="float-right">建物コード</label></div>
-                    <div class="col-5 col-sm-4 col-md-3">{{ form.building_code }}</div>
-                    <div class="col-4 col-sm-5 col-md-7">
+                <div class="row py-1 justify-content-center">
+                    <div class="col col-auto col-form-label text-end"><label>建物コード</label></div>
+                    <div class="col col-auto">{{ form.building_code }}</div>
+                </div>
+                <div class="row py-1 justify-content-center">
+                    <div class="col-auto">
                         <input type="submit" value="検索" class="btn btn-primary">
+                    </div>
+                    <div class="col-auto">
                         <input type="button" value="クリア" v-on:click="clearConditions($event)" class="btn btn-secondary">
                     </div>
                 </div>
@@ -31,20 +35,20 @@
         {% if buildings %}
         <div id="data-list">
             <div class="row">
-                <div class="col col-3 col-md-2 text-center">建物コード</div>
-                <div class="col col-4 col-md-4 text-center">建物名称</div>
-                <div class="col col-5 col-md-6 text-center">住所</div>
+                <div class="col col-3 col-md-2 py-1 text-center">建物コード</div>
+                <div class="col col-4 col-md-4 py-1 text-center">建物名称</div>
+                <div class="col col-5 col-md-6 py-1 text-center">住所</div>
             </div>
             {% for item in buildings %}
             <div class="row">
-                <div class="col col-3 col-md-2">
+                <div class="col col-3 col-md-2 py-1">
                     <div class="small">{{ item.building_code }}</div>
                 </div>
-                <div class="col col-4 col-md-4">
+                <div class="col col-4 col-md-4 py-1">
                     <div><a href="{% url 'building_building' item.oid %}" target="_blank" rel="noopener noreferrer">{{ item.building_name }}</a></div>
                     {% if item.building_old_name %}<div class="small">旧:&nbsp;{{ item.building_old_name }}</div>{% endif %}
                 </div>
-                <div class="col col-5 col-md-6">
+                <div class="col col-5 col-md-6 py-1">
                     <div class="small">{{ item.address }}</div>
                 </div>
             </div>

@@ -11,7 +11,7 @@
 
     {% block header %}
         <div class="row">
-            <div class="col col-12 text-right">
+            <div class="col col-12 py-1 text-end">
                 <p class="user_info">{{ company.company_name }} : {{ user.last_name }} {{ user.first_name }}</p>
             </div>
         </div>
@@ -25,15 +25,15 @@
             {% for city in cities %}
             <div class="city">
                 <div class="row">
-                    <div class="col col-12">
-                        <a href="{% url 'search_map_non_residential_map' %}?lat={{ city.lat }}&lng={{ city.lng }}" class="btn btn-block btn-primary">
+                    <div class="col col-12 py-1">
+                        <a href="{% url 'search_map_non_residential_map' %}?lat={{ city.lat }}&lng={{ city.lng }}" class="btn btn-primary w-100">
                             <span class="city-name">{{ city.name }}</span><img src="{% static 'search_map/images/map_icon.png' %}">
                         </a>
                     </div>
                 </div>
                 {% if city.pointed_areas|length > 0 %}
                 <div class="row">
-                    <div class="col col-12">
+                    <div class="col col-12 py-1">
                         <div class="areas">
                         {% for area in city.pointed_areas %}
                             <a href="{% url 'search_map_non_residential_map' %}?lat={{ area.lat }}&lng={{ area.lng }}" class="btn btn-outline-primary">{{ area.name }}</a>

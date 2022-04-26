@@ -23,11 +23,6 @@ footer {
     flex: 1;
 }
 
-#container  .col,
-#container  [class*="col-"] {
-    padding: 5px;
-}
-
 #header div.system_title {
     font-size: 18px;
     color: #000000;

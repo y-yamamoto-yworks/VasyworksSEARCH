@@ -10,16 +10,15 @@
     <meta name="format-detection" content="telephone=no">
     <title>{{ room.building.building_name }} {{ room.room_no }} 号室</title>
     <link rel="shortcut icon" href="{% static 'vacancy_search/images/favicon.ico' %}">
-    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/bootstrap5/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'room/css/ledger.css' %}">
-    <script type="text/javascript" src="{% static 'lib/jquery/jquery-3.4.1.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/bootstrap5/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/vue/vue.min.js' %}"></script>
 </head>
 <body>
     <div id="container">
         <div id="header">
-            <div class="row">
+            <div class="row p-3">
                 <div id="btn_print" class="col col-12">
                     <input type="button" value="印刷" onclick="window.print();"/>
                 </div>
@@ -28,37 +27,34 @@
 
         <div id="contents">
             <div id = "details">
-                <div class="row">
-                    <div class="col col-12 ledger-title">
+                <div class="row py-3">
+                    <div class="col col-12 py-1 ledger-title">
                         {{ room.building.building_name | default_if_none:'' }}
                         {% if room.room_no %} {{ room.room_no }}号室{% endif %}
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col col-8 address">
+
+                    <div class="col col-8 py-1 address">
                         <div>〒{{ room.building.postal_code | default_if_none:''}} {{ room.building.address | default_if_none:''}}</div>
                         {% if room.building.nearest_station1 %}<div>1: {{ room.building.nearest_station1 }}</div>{% endif %}
                         {% if room.building.nearest_station2 %}<div>2: {{ room.building.nearest_station2 }}</div>{% endif %}
                         {% if room.building.nearest_station3 %}<div>3: {{ room.building.nearest_station3 }}</div>{% endif %}
                     </div>
-                    <div class="col col-4 building-info">
+                    <div class="col col-4 py-1 building-info">
                         {% if room.building.building_type.name %}<div>種別: {{ room.building.building_type.name }}</div>{% endif %}
                         <div>築年月: {{ room.building.build_year}}年{{ room.building.build_month}}月</div>
                         {% if room.building.structure.name %}<div>構造: {{ room.building.structure.name}}</div>{% endif %}
                         <div>所在階: {{ room.room_floor }}階 / {{ room.building.building_floors }}階建 総戸数: {{ room.building.building_rooms }}戸</div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col col-12 room-info">
+
+                    <div class="col col-12 py-1 room-info">
                         間取り: {{ room.layout_type.name | default_if_none:'' }}
                         {% if room.layout_detail_text %}（{{ room.layout_detail_text }}）{% endif %}
                         {% if room.direction.name %}{{ room.direction.name }}向き{% endif %}
                         専有面積: {{ room.room_area_text }}m<sup>2</sup>
                         バルコニー面積: {{ room.balcony_area_text }}m<sup>2</sup>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col col-12 monthly-cost">
+
+                    <div class="col col-12 py-1 monthly-cost">
                         <div>【月額費用】</div>
                         <div>
                             <span class="nowrap">賃料{{ room.rent_text }}</span>
@@ -77,9 +73,8 @@
                             {% if room.monthly_cost_text10 %}<span class="nowrap">{{ room.monthly_cost_text1 }</span>}{% endif %}
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col col-3 deposit">
+
+                    <div class="col col-3 py-1 deposit">
                         <div>【敷金・礼金等】</div>
                         <div>
                             <div>
@@ -92,7 +87,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col col-3 contract-span">
+                    <div class="col col-3 py-1 contract-span">
                         <div>【契約期間等】</div>
                         <div>
                             <div>契約期間: {{ room.contract_span_text | default_if_none:'' }}</div>
@@ -101,7 +96,7 @@
                             {% if room.recontract_fee_text %}<div>再契約料{{ room.recontract_fee_text }}</div>{% endif %}
                         </div>
                     </div>
-                    <div class="col col-3 garage">
+                    <div class="col col-3 py-1 garage">
                         <div>【駐車場】</div>
                         <div>種別: {{ room.building.garage_type.name }}</div>
                         {% if room.building.garage_distance > 0 %}
@@ -119,7 +114,7 @@
                         </div>
                         {% endif %}
                     </div>
-                    <div class="col col-3 bike-park">
+                    <div class="col col-3 py-1 bike-park">
                         <div>【駐輪場】</div>
                         <div>種別: {{ room.building.bike_parking_type }}</div>
                         {% if room.building.bike_parking_fee_lower > 0 %}
@@ -134,15 +129,14 @@
                         </div>
                         {% endif %}
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col col-6 guarantee">
+
+                    <div class="col col-6 py-1 guarantee">
                         <div>【火災保険】</div>
                         <div>
                             <div>{{ room.insurance_text | default_if_none:'' }}</div>
                         </div>
                     </div>
-                    <div class="col col-6 guarantee">
+                    <div class="col col-6 py-1 guarantee">
                         <div>【家賃保証会社】</div>
                         <div>
                             <div>
@@ -152,9 +146,8 @@
                             {% if room.guarantee_fee %}<div>保証料: {{ room.guarantee_fee }}</div>{% endif %}
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col col-12 equipments">
+
+                    <div class="col col-12 py-1 equipments">
                         <div>【主要設備等】</div>
                         <div>
                             <span class="nowrap">浴室/{{ room.bath_type.name }}</span>
@@ -174,7 +167,7 @@
             </div>
 
             <div id="images">
-                <div class="row">
+                <div class="row frame">
                     <div class="col col-4">
                         <img src="{{ building_image.cache_file_url }}" alt="建物外観" class="img-fluid ">
                     </div>
@@ -185,22 +178,28 @@
                         <img src="{{ layout_image.cache_file_url }}" alt="間取図" class="img-fluid">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col col-12">
-                        {% if room.building.lat > 0 and room.building.lng > 0 %}
-                        <div id="id_map">
-                            <l-map :zoom="zoom" :center="center">
-                                <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                                <l-marker :lat-lng="marker" :icon="icon"></l-marker>
-                            </l-map>
+            </div>
+            <div id="map-image">
+                <div class="row frame py-1 justify-content-center">
+                    <div class="col col-auto">
+                        <div class="row">
+                            <div class="col col-12">
+                                {% if room.building.lat > 0 and room.building.lng > 0 %}
+                                <div id="id_map">
+                                    <l-map :zoom="zoom" :center="center">
+                                        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                                        <l-marker :lat-lng="marker" :icon="icon"></l-marker>
+                                    </l-map>
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>
             {% if user.staff.department %}
             <div id="contact">
-                <div class="row">
+                <div class="row frame py-3">
                     <div class="col col-12">
                         <div>【連絡先】
                         {{ company.company_name }} {{ user.staff.department.department_name }}

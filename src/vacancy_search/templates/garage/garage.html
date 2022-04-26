@@ -13,7 +13,7 @@
     {% block h1_title %}
         <div id="building-title">
             <div class="row">
-                <div class="col col-12 building-name">
+                <div class="col col-12 py-1 building-name">
                     {{ garage.building_name | default_if_none:'' }}
                 </div>
             </div>
@@ -23,31 +23,27 @@
     {% block contents %}
         <div id="details">
             <div class="row">
-                <div class="col col-12 details-title"><h2>月極駐車場詳細</h2></div>
+                <div class="col col-12 py-1 details-title"><h2>月極駐車場詳細</h2></div>
             </div>
             <div class="building-details">
                 <div class="row">
-                    <div class="col col-5 col-md-3">
+                    <div class="col col-5 col-md-3 py-1">
                         {% if garage.building_id_text %}建物コード: <span id="id_building_code">{{ garage.building_id_text }}</span>{% endif %}
                     </div>
-                    <div class="col col-7 col-md-9">
+                    <div class="col col-7 col-md-9 py-1">
                         <div>名称: <span id="id_building_name">{{ garage.building_name }}</span></div>
                         {% if garage.building_old_name %}<div>旧: <span id="id_building_old_name">{{ garage.building_old_name }}</span></div>{% endif %}
                     </div>
-                </div>
-                <div class="row">
-                    <div class = "col col-12">
+                    <div class = "col col-12 py-1">
                         {% if garage.postal_code %}〒 <span id="id_postal_code">{{ garage.postal_code | default_if_none:''}}</span>{% endif %}
                         <span id="id_address">{{ garage.address | default_if_none:'住所不明' }}</span>
                         {% if garage.register_text %}<div class="small"><span id="id_register">{{ garage.register_text }}</span></div>{% endif %}
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col col-12 col-sm-6">
+                    <div class="col col-12 col-sm-6 py-1">
                         <div>【駐車料月額】</div>
                         <div><span id="id_garage_fee">{{ garage.garage_fee_text | default_if_none:'' }}<span></span></div>
                     </div>
-                    <div class="col col-12 col-sm-6">
+                    <div class="col col-12 col-sm-6 py-1">
                         <div>【駐車場手数料】</div>
                         <div><span id="id_garage_charge">{{ garage.garage_charge_text | default_if_none:'' }}</span></div>
                     </div>
@@ -57,9 +53,7 @@
                         {% if garage.garage_note %}<div class="annotation"><span id="id_garage_note">{{ garage.garage_note | linebreaksbr }}</span></div>{% endif %}
                     </div>
                     {% endif %}
-                </div>
-                <div class="row">
-                    <div class="col col-12 col-md-6">
+                    <div class="col col-12 col-md-6 py-1">
                         <div class="small">（管理会社）【管理種別】<span id="id_management_type">{{ garage.management_type.name | default_if_none:'-----' }}</span></div>
                         {% if garage.management_type.is_own %}
                             <div class="small"><span id="id_department_name">{{ garage.department_name_text }}</span></div>
@@ -69,79 +63,77 @@
                             {% if garage.trader_tel_text %}<div class="small">電話番号: <span id="id_trader_tel">{{ garage.trader_tel_text }}</span></div>{% endif %}
                         {% endif %}
                     </div>
-                    <div class="col col-12 col-md-6">
+                    <div class="col col-12 col-md-6 py-1">
                         <div class="small">（オーナー）</div>
                         {% if garage.owner_name_text %}
                             <div class="small">{{ garage.owner_name_text }}</div>
                             {% if garage.owner_tel_text %}<div class="small">電話番号: {{ garage.owner_tel_text }}</div>{% endif %}
                         {% endif %}
                     </div>
-                </div>
-                {% if garage.garages %}
-                <div class="row">
-                    <div class="col col-12 details-title"><h2>駐車スペース詳細</h2></div>
-                </div>
-                <div class="row garage-list">
-                    <div class="col col-12">
-                        <table class="table-sm table-responsive table-bordered text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="garage-name">名称</th>
-                                    <th scope="col" class="garage-status">状況</th>
-                                    <th scope="col" class="garage-fee">駐車料月額</th>
-                                    <th scope="col" class="garage-charge">駐車場手数料</th>
-                                    <th scope="col" class="garage-deposit">駐車場保証金</th>
-                                    <th scope="col" class="certification">車庫証明</th>
-                                    <th scope="col" class="initial-cost">初期費用</th>
-                                    <th scope="col" class="garage-size">サイズ</th>
-                                    <th scope="col" class="garage-etc">その他</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for garage in garage.garages %}
-                                <tr class="garage">
-                                    <td class="garage-name">{{ garage.garage_name | default_if_none:'' }}</td>
-                                    <td class="garage-status">
-                                        {{ garage.garage_status.name | default_if_none:'' }}
-                                    </td>
-                                    <td class="garage-fee">
-                                        <span id="id_garage_{{ forloop.counter }}_fee">{{ garage.garage_fee_text | default_if_none:'' }}</span>
-                                    </td>
-                                    <td class="garage-charge">
-                                        <span id="id_garage_{{ forloop.counter }}_charge">{{ garage.garage_charge_text | default_if_none:'' }}</span>
-                                    </td>
-                                    <td class="garage-deposit">
-                                        <span id="id_garage_{{ forloop.counter }}_deposit">{{ garage.garage_deposit_text | default_if_none:'' }}</span>
-                                    </td>
-                                    <td class="certification">
-                                        <span id="id_garage_{{ forloop.counter }}_certification_fee">{{ garage.certification_fee_text | default_if_none:'' }}</span>
-                                    </td>
-                                    <td class="initial-cost">
-                                        {% if garage.initial_cost_name1 and garage.initial_cost_text1 %}<div class="small"><span id="id_garage_{{ forloop.counter }}_initial_cost1">{{ garage.initial_cost_name1 }}: {{ garage.initial_cost_text1 }}</span></div>{% endif %}
-                                        {% if garage.initial_cost_name2 and garage.initial_cost_text2 %}<div class="small"><span id="id_garage_{{ forloop.counter }}_initial_cost2">{{ garage.initial_cost_name2 }}: {{ garage.initial_cost_text2 }}</span></div>{% endif %}
-                                        {% if garage.initial_cost_name3 and garage.initial_cost_text3 %}<div class="small"><span id="id_garage_{{ forloop.counter }}_initial_cost3">{{ garage.initial_cost_name3 }}: {{ garage.initial_cost_text3 }}</span></div>{% endif %}
-                                    </td>
-                                    <td class="garage-size">
-                                        <span id="id_garage_{{ forloop.counter }}_size" class="small">{{ garage.garage_size_text | default_if_none:'' }}</span>
-                                    </td>
-                                    <td class="garage-etc">
-                                        {% if garage.comment %}<div class="small"><span id="id_garage_{{ forloop.counter }}_comment">{{ garage.comment | linebreaksbr }}</span></div>{% endif %}
-                                        {% if garage.note %}<div class="annotation"><span id="id_garage_{{ forloop.counter }}_note">{{ garage.note | linebreaksbr }}</span></div>{% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                    {% if garage.garages %}
+                    <div class="col col-12 py-1 details-title"><h2>駐車スペース詳細</h2></div>
+                    <div class="col col-12 py-1">
+                        <div class="table-responsive">
+                            <table class="table-sm table-responsive table-bordered text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="garage-name">名称</th>
+                                        <th scope="col" class="garage-status">状況</th>
+                                        <th scope="col" class="garage-fee">駐車料月額</th>
+                                        <th scope="col" class="garage-charge">駐車場手数料</th>
+                                        <th scope="col" class="garage-deposit">駐車場保証金</th>
+                                        <th scope="col" class="certification">車庫証明</th>
+                                        <th scope="col" class="initial-cost">初期費用</th>
+                                        <th scope="col" class="garage-size">サイズ</th>
+                                        <th scope="col" class="garage-etc">その他</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for garage in garage.garages %}
+                                    <tr class="garage">
+                                        <td class="garage-name">{{ garage.garage_name | default_if_none:'' }}</td>
+                                        <td class="garage-status">
+                                            {{ garage.garage_status.name | default_if_none:'' }}
+                                        </td>
+                                        <td class="garage-fee">
+                                            <span id="id_garage_{{ forloop.counter }}_fee">{{ garage.garage_fee_text | default_if_none:'' }}</span>
+                                        </td>
+                                        <td class="garage-charge">
+                                            <span id="id_garage_{{ forloop.counter }}_charge">{{ garage.garage_charge_text | default_if_none:'' }}</span>
+                                        </td>
+                                        <td class="garage-deposit">
+                                            <span id="id_garage_{{ forloop.counter }}_deposit">{{ garage.garage_deposit_text | default_if_none:'' }}</span>
+                                        </td>
+                                        <td class="certification">
+                                            <span id="id_garage_{{ forloop.counter }}_certification_fee">{{ garage.certification_fee_text | default_if_none:'' }}</span>
+                                        </td>
+                                        <td class="initial-cost">
+                                            {% if garage.initial_cost_name1 and garage.initial_cost_text1 %}<div class="small"><span id="id_garage_{{ forloop.counter }}_initial_cost1">{{ garage.initial_cost_name1 }}: {{ garage.initial_cost_text1 }}</span></div>{% endif %}
+                                            {% if garage.initial_cost_name2 and garage.initial_cost_text2 %}<div class="small"><span id="id_garage_{{ forloop.counter }}_initial_cost2">{{ garage.initial_cost_name2 }}: {{ garage.initial_cost_text2 }}</span></div>{% endif %}
+                                            {% if garage.initial_cost_name3 and garage.initial_cost_text3 %}<div class="small"><span id="id_garage_{{ forloop.counter }}_initial_cost3">{{ garage.initial_cost_name3 }}: {{ garage.initial_cost_text3 }}</span></div>{% endif %}
+                                        </td>
+                                        <td class="garage-size">
+                                            <span id="id_garage_{{ forloop.counter }}_size" class="small">{{ garage.garage_size_text | default_if_none:'' }}</span>
+                                        </td>
+                                        <td class="garage-etc">
+                                            {% if garage.comment %}<div class="small"><span id="id_garage_{{ forloop.counter }}_comment">{{ garage.comment | linebreaksbr }}</span></div>{% endif %}
+                                            {% if garage.note %}<div class="annotation"><span id="id_garage_{{ forloop.counter }}_note">{{ garage.note | linebreaksbr }}</span></div>{% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
 
         {% if garage.lat > 0 and garage.lng > 0 %}
         <div id="building-map" class="no-printing">
             <div class="row map-title">
-                <div class="col col-12">地図</div>
+                <div class="col col-12 py-1">地図</div>
             </div>
             <div id="id_map">
                 <l-map :zoom="zoom" :center="center">
@@ -155,7 +147,7 @@
         {% if garage.pictures %}
         <div id="image-list" class="no-printing">
             <div class="row image-list-title">
-                <div class="col col-12">画像</div>
+                <div class="col col-12 py-1">画像</div>
             </div>
             <div class="row">
             {% for picture in garage.pictures %}
@@ -174,7 +166,7 @@
         {% if garage.panoramas %}
         <div id="panorama-list" class="no-printing">
             <div class="row panorama-list-title">
-                <div class="col col-12">パノラマ</div>
+                <div class="col col-12 py-1">パノラマ</div>
             </div>
             <div class="row">
             {% for panorama in garage.panoramas %}
@@ -189,7 +181,7 @@
         {% if garage.movies %}
         <div id="movie-list" class="no-printing">
             <div class="row movie-list-title">
-                <div class="col col-12">動画</div>
+                <div class="col col-12 py-1">動画</div>
             </div>
             <div class="row">
             {% for movie in garage.movies %}
@@ -204,7 +196,7 @@
         {% if garage.files %}
         <div id="file-list" class="no-printing">
             <div class="row file-list-title">
-                <div class="col col-12">添付ファイル</div>
+                <div class="col col-12 py-1">添付ファイル</div>
             </div>
             <div class="row">
             {% for file in garage.files %}
@@ -227,7 +219,7 @@
     {% endblock %}
 
     {% block footer %}
-        <script src="{% static 'lib/lightbox2/js/lightbox.min.js' %}"></script>
+        <script src="{% static 'lib/lightbox2/js/lightbox-plus-jquery.min.js' %}"></script>
         <script>
             lightbox.option({
                 'wrapAround': true,

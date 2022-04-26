@@ -12,7 +12,7 @@
 
     {% block header %}
         <div class="row">
-            <div class="col col-12 text-right">
+            <div class="col col-12 py-1 text-end">
                 <p class="user_info">{{ company.company_name }} : {{ user.last_name }} {{ user.first_name }}</p>
             </div>
         </div>
@@ -86,8 +86,14 @@
                         </tbody>
                     </table>
                     <div class="btn-box">
-                        <button type="submit" class="btn btn-primary">この条件で検索する</button>
-                        <button type="submit" class="btn btn-outline-secondary" v-on:click="clearConditions($event)">条件をクリアする</button>
+                        <div class="row justify-content-center">
+                            <div class="col col-auto">
+                                <button type="submit" class="btn btn-primary">この条件で検索する</button>
+                            </div>
+                            <div class="col col-auto">
+                                <button type="submit" class="btn btn-outline-secondary" v-on:click="clearConditions($event)">条件をクリアする</button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -137,7 +143,7 @@
         </div>
         <div id="search-list">
             <div class="row">
-                <div v-for="garage in garages" class="col col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div v-for="garage in garages" class="col col-12 col-sm-6 col-lg-4 col-xl-3 gy-1">
                     <div class="list-box">
                         <div class="garage-name"><a v-bind:href="garage.linkUrl" target="_blank" rel="noopener noreferrer">[[ garage.garageName ]]</a></div>
                         <div class="garage-address">[[ garage.address ]]</div>

@@ -22,7 +22,6 @@ body {
 }
 
 #details .col {
-    padding: 2px;
     border: solid 1px black;
 }
 
@@ -40,7 +39,7 @@ body {
     margin: 10px 0;
 }
 
-#images .row {
+#images .frame {
     padding: 0;
     border: solid 1px black;
 }
@@ -50,22 +49,31 @@ body {
     border: 0;
 }
 
+#map-image {
+    margin: 10px 0;
+    break-inside: avoid;
+}
+
+#map-image .frame {
+    padding: 5px;
+    border: solid 1px black;
+}
+
 #id_map {
-    width: 100%;
-    height: 300px;
+    width: 160mm;
+    height: 120mm;
 }
 
 #contact{
     margin: 10px 0;
 }
 
-#contact .row {
+#contact .frame {
     padding: 0;
     border: solid 1px black;
 }
 
 #contact .col {
-    padding: 2px;
     border: 0;
 }
 
