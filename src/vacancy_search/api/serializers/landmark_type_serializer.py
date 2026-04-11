@@ -2,7 +2,7 @@
 System Name: Vasyworks
 Project Name: vacancy_search
 Encoding: UTF-8
-Copyright (C) 2021 Yasuhiro Yamamoto
+Copyright (C) 2020 - 2026 Yasuhiro Yamamoto
 """
 from rest_framework import serializers
 from rent_db.models import LandmarkType

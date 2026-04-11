@@ -2,7 +2,7 @@
 System Name: Vasyworks
 Project Name: vacancy_search
 Encoding: UTF-8
-Copyright (C) 2021 Yasuhiro Yamamoto
+Copyright (C) 2020 - 2026 Yasuhiro Yamamoto
 """
 
 import os
@@ -10,9 +10,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '任意のキー'
@@ -36,6 +33,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_bootstrap5',
     'django_filters',
+    'corsheaders',
     'api',
     'building',
     'garage',
@@ -82,7 +80,6 @@ WSGI_APPLICATION = 'vacancy_search.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -96,6 +93,32 @@ DATABASES = {
 }
 
 
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = [
+    # 公開用
+    # 'https://vasyworks-search.yworks.net',
+    # 'http://vasyworks-search.yworks.net',
+
+    # 開発用
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
+
+# CORS
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    # 本番用
+    # 'https://vasyworks-search.yworks.net',
+    # 'http://vasyworks-search.yworks.net',
+
+    # 開発用
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+CORS_PREFLIGHT_MAX_AGE = 60 * 30  # 許可時間30分
+
+
 # Authorization
 AUTH_USER_MODEL = 'users.User'
 AUTHENTICATION_BACKENDS = [
@@ -107,7 +130,6 @@ LOGIN_ERROR_URL = '/login/'
 
 
 # Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -126,7 +148,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'ja'
 
@@ -140,7 +161,6 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -153,16 +173,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-
-
 # REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
 }
+
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 
 # Application settings
 COMPANY_ID = 1      # 会社ID（会社マスタ参照用）

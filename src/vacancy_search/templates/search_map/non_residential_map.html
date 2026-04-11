@@ -4,6 +4,7 @@
 
     {% block head_title %}非居住用地図検索{% endblock %}
     {% block head %}
+        <meta name="referrer" content="no-referrer-when-downgrade">
         <link rel="stylesheet" href="{% static 'search_map/css/style.css' %}">
         <link rel="stylesheet" href="{% static 'search_map/css/loader.css' %}">
     {% endblock %}
@@ -285,7 +286,10 @@
     {% endblock %}
 
     {% block footer %}
-        <a href="{% url 'logout' %}" class="btn btn-secondary">ログアウト</a>
+        <form action="{% url 'logout' %}" method="post" class="pt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary">ログアウト</button>
+        </form>
     {% endblock %}
 
     {% block page_bottom %}

@@ -2,7 +2,7 @@
 System Name: Vasyworks
 Project Name: vacancy_search
 Encoding: UTF-8
-Copyright (C) 2021 Yasuhiro Yamamoto
+Copyright (C) 2020 - 2026 Yasuhiro Yamamoto
 """
 from django.db import models
 from django.utils.translation import gettext_lazy as _
