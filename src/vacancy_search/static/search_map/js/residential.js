@@ -2,7 +2,7 @@
 System Name: Vasyworks
 Project Name: vacancy_search
 Encoding: UTF-8
-Copyright (C) 2021 Yasuhiro Yamamoto
+Copyright (C) 2020 - 2026 Yasuhiro Yamamoto
  */
 var { LMap, LTileLayer, LMarker, LIcon, LPopup } = Vue2Leaflet;
 
@@ -27,8 +27,8 @@ function createResidentialSearchMapVue(
             center: L.latLng(0, 0),
             default_lat: lat,
             default_lng: lng,
-            url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            url: 'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
+            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
             mapBuildings: [],
             buildings: [],
             mapLoading: false,
