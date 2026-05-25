@@ -10,6 +10,9 @@ Vasyworks:無料で使えるオープンソースの賃貸空室情報システ�
 https://vasyworks.yworks.net
 --
 
+動作の確認ができるDockerのテスト環境もご用意しています。
+https://github.com/y-yamamoto-yworks/Vasyworks-Docker
+
 2.VasyworksSEARCH（空室情報検索プロジェクト）について
 VasyworksSEARCHは自社仲介部門のスタッフなどがVasyworksの空室情報を地図などを使って検索するためのプロジェクトです。VasyworksDBで構築されたデータベースおよびVasyworksMGRで登録された空室情報データを利用します。VasyworksMGRで登録された自社ユーザは、VasyworksSEARCHを利用して、物件情報を検索して詳細を閲覧することができます。
 
