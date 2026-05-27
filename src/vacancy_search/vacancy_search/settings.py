@@ -184,6 +184,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
+# Font settings
+WINDOWS_FONT_PATH = r"C:\WINDOWS\Fonts\MSGOTHIC.ttc"    # Windows系OS用のフォントパス
+MAC_FONT_PATH = "/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc"  # Mac系OS用のフォントパス
+UNIX_FONT_PATH = "/usr/share/fonts/ipa-gothic/ipag.ttf"   # Unix系OS用のフォントパス
+
+
 # Application settings
 COMPANY_ID = 1      # 会社ID（会社マスタ参照用）
 DEFAULT_PREF_ID = 26        # デフォルトの都道府県ID（未指定可）
