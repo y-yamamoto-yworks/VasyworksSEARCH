@@ -255,50 +255,7 @@
 
         {% if lat > 0 and lng > 0 %}
         <div id="search-map">
-            <div id="id_map">
-                <l-map
-                        :zoom="zoom"
-                        :center="center"
-                            @update:bounds="updateBounds"
-                            @update:zoom="updateZoom"
-                            :options="{scrollWheelZoom:false, preferCanvas:true}">
-                    <div v-show="mapLoading" class="loader">Loading...</div>
-                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                    <l-marker v-for="building in mapBuildings" :key="building.linkId" :lat-lng="building.latLng" :icon="building.icon" @click="mapMarkerClick(building)">
-                        <div v-show="mapLoading">
-                            <l-popup>
-                                <table class="popup">
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="2" class="building-name">
-                                                <a v-bind:href="building.linkUrl" target="_blank" rel="noopener noreferrer">[[ building.buildingName ]]</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" class="building-address">[[ building.address ]]</td>
-                                        </tr>
-                                        <tr>
-                                            <td rowspan="8" class="building-image" >
-                                                <a v-bind:href="building.linkUrl" target="_blank" rel="noopener noreferrer">
-                                                    <img v-if="building.mapImage" v-bind:src="building.mapImage" class="img-fluid" alt="写真">
-                                                    <div v-else class="no-image">No Image</div>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="building-item">【賃料】[[ building.rent ]]</td></tr>
-                                        <tr><td class="building-item">【間取り】[[ building.layout ]]</td></tr>
-                                        <tr><td class="building-item">[[building.building_type]] [[ building.building_floors ]]階建</td></tr>
-                                        <tr><td class="building-item">[[ building.build_year_month ]] 総戸数:[[ building.building_rooms ]]戸</td></tr>
-                                        <tr><td class="building-item">[[ building.structure ]]</td></tr>
-                                        <tr><td class="building-item">駐車場:[[ building.garage_type ]]</td></tr>
-                                        <tr><td class="building-item">駐輪場:[[ building.bike_parking_type ]]</td></tr>
-                                    </tbody>
-                                </table>
-                            </l-popup>
-                        </div>
-                    </l-marker>
-                </l-map>
-            </div>
+            <div id="id_map"></div>
             <div v-if="message" class="message">[[ message ]]</div>
         </div>
         <div id="search-list">
@@ -337,7 +294,6 @@
     {% block page_bottom %}
         <link rel="stylesheet" href="{% static 'lib/leaflet/leaflet.css' %}" />
         <script src="{% static 'lib/leaflet/leaflet.js' %}"></script>
-        <script src="{% static 'lib/vue2-leaflet/vue2-leaflet.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'search_map/js/residential.js' %}"></script>
         <script type="text/javascript">
             var app = createResidentialSearchMapVue(

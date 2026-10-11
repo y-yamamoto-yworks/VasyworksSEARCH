@@ -186,12 +186,7 @@
                         <div class="row">
                             <div class="col col-12">
                                 {% if room.building.lat > 0 and room.building.lng > 0 %}
-                                <div id="id_map">
-                                    <l-map :zoom="zoom" :center="center">
-                                        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                                        <l-marker :lat-lng="marker" :icon="icon"></l-marker>
-                                    </l-map>
-                                </div>
+                                <div id="id_map"></div>
                                 {% endif %}
                             </div>
                         </div>
@@ -216,7 +211,6 @@
 
     <link rel="stylesheet" href="{% static 'lib/leaflet/leaflet.css' %}" />
     <script src="{% static 'lib/leaflet/leaflet.js' %}"></script>
-    <script src="{% static 'lib/vue2-leaflet/vue2-leaflet.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'room/js/ledger.js' %}"></script>
     <script type="text/javascript">
         var app = createLedgerVue(

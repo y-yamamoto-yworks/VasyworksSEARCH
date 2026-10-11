@@ -4,7 +4,6 @@ Project Name: vacancy_search
 Encoding: UTF-8
 Copyright (C) 2020 - 2026 Yasuhiro Yamamoto
  */
-var { LMap, LTileLayer, LMarker, LIcon, LPopup } = Vue2Leaflet;
 
 function createGarageSearchMapVue(
     key,    // キー
@@ -15,7 +14,6 @@ function createGarageSearchMapVue(
     return new Vue({
         el: "#contents",
         delimiters: ["[[", "]]"],
-        components: {LMap, LTileLayer, LMarker, LIcon, LPopup},
         data: {
             conditionAreaIsHidden: true,
             maxDataCount: 100,
@@ -24,14 +22,12 @@ function createGarageSearchMapVue(
             zoom: 17,
             searchableMinZoom: 16,      // 検索可能な最小のズーム
             isSearchable: true,
-            center: L.latLng(0, 0),
             default_lat: lat,
             default_lng: lng,
             url: 'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
             attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
             mapGarages: [],
             garages: [],
-            mapLoading: false,
             lastBounds: null,
             iconOn: L.icon({
                 iconUrl: "/static/search_map/images/car_icon_on.png",
@@ -47,12 +43,70 @@ function createGarageSearchMapVue(
             upperGarageFee: 0,
             onlyOwn: false,
             forRent: false,
+            map: null,
+            markerGroup: null,
+            markersMap: {},
+            mapLoading: null,
         },
         mounted: function(event) {
             // マウント後の処理
-            this.center = L.latLng(this.default_lat, this.default_lng);
+            this.$nextTick(function() {
+                this.initMap();
+            });
         },
         methods: {
+            initMap: function() {
+                var mapEl = document.getElementById('id_map');
+                if (!mapEl) return;
+
+                this.map = L.map('id_map', {
+                    scrollWheelZoom: false,
+                    preferCanvas: true
+                }).setView([this.default_lat, this.default_lng], this.zoom);
+
+                L.tileLayer(this.url, {
+                    attribution: this.attribution
+                }).addTo(this.map);
+
+                this.mapLoading = L.control({ position: 'topleft' });
+                this.mapLoading.onAdd = function(map) {
+                    var divLoading = L.DomUtil.create('div', 'map-loading');
+                    divLoading.innerHTML = 'Loading...';
+                    divLoading.style.display = 'none';
+
+                    divLoading.style.fontSize = '24px';
+                    divLoading.style.fontWeight = 'bold';
+                    divLoading.style.color = '#dddddd';
+                    divLoading.style.backgroundColor = '#999999';
+                    divLoading.style.padding = '15px 30px';
+                    divLoading.style.borderRadius = '8px';
+                    divLoading.style.boxShadow = '0 4px 15px rgba(0,0,0,0.5)';
+
+                    divLoading.style.position = 'fixed';
+                    divLoading.style.top = '50%';
+                    divLoading.style.left = '50%';
+                    divLoading.style.transform = 'translate(-50%, -50%)';
+                    divLoading.style.zIndex = '9999';
+
+                    return divLoading;
+                };
+                this.mapLoading.addTo(this['map']);
+
+                this.markerGroup = L.layerGroup().addTo(this.map);
+
+                this.map.on('moveend zoomend', () => {
+                    let currentZoom = this.map.getZoom();
+                    this.updateZoom(currentZoom);
+
+                    if (this.isSearchable) {
+                        let bounds = this.map.getBounds();
+                        this.updateBounds(bounds);
+                    }
+                });
+
+                let initialBounds = this.map.getBounds();
+                this.updateBounds(initialBounds);
+            },
             showConditions: function(event) {
                 this.conditionAreaIsHidden = false;
             },
@@ -79,12 +133,20 @@ function createGarageSearchMapVue(
             updateZoom: function(zoom) {
                 // 地図のズームイベント
                 if(zoom < this.searchableMinZoom) {
+                    this.clearAllMarkers();
                     this.mapGarages = [];
                     this.garages = [];
                     this.isSearchable = false;
                 } else {
                     this.isSearchable = true;
                 }
+            },
+            clearAllMarkers: function() {
+                this.mapGarages = [];
+                if (this.markerGroup) {
+                    this.markerGroup.clearLayers();
+                }
+                this.markersMap = {};
             },
             mapMarkerClick: function(garage) {
                 // マーカークリック済みの処理
@@ -95,13 +157,16 @@ function createGarageSearchMapVue(
                 if (this.mapGarages.length > 200) this.mapGarages = [];
                 this.garages = [];
 
-                north = bounds._northEast.lat;
-                south = bounds._southWest.lat;
-                east = bounds._northEast.lng;
-                west = bounds._southWest.lng;
+                let north = bounds._northEast.lat;
+                let south = bounds._southWest.lat;
+                let east = bounds._northEast.lng;
+                let west = bounds._southWest.lng;
 
                 if (north > 0 && south > 0 && east > 0 && west > 0) {
-                    this.mapLoading = true;
+                    if (this.mapLoading && this.mapLoading.getContainer()) {
+                        this.mapLoading.getContainer().style.display = 'block';
+                    }
+
                     let that = this;
 
                     // 緯度経度
@@ -154,17 +219,70 @@ function createGarageSearchMapVue(
                                         break;
                                     }
                                 }
-                                if(!isExists) that.mapGarages.push(garage);
+                                if(!isExists)
+                                {
+                                    that.mapGarages.push(garage);
+                                    that.addGarageMarker(garage);
+                                }
                                 that.garages.push(garage);
                             });
 
-                            that.mapLoading = false;
+                            if (that.mapLoading && that.mapLoading.getContainer()) {
+                                that.mapLoading.getContainer().style.display = 'none';
+                            }
                         })
                         .catch(function (error) {
-                            that.mapLoading = false;
+                            if (that.mapLoading && that.mapLoading.getContainer()) {
+                                that.mapLoading.getContainer().style.display = 'none';
+                            }
                             alert("物件の取得に失敗しました。");
                         });
                 }
+            },
+            addGarageMarker: function(garage) {
+                if (!this['map'] || !this.markerGroup) return;
+                if (this.markersMap[garage.id]) return;
+
+                let marker = L.marker(garage.latLng, { icon: garage.icon });
+
+                let popupContent = this.createPopupContent(garage);
+                marker.bindPopup(popupContent);
+
+                marker.on('click', () => {
+                    garage.icon = this.iconOff;
+                    marker.setIcon(this.iconOff);
+                });
+
+                marker.addTo(this.markerGroup);
+                this.markersMap[garage.id] = marker;
+            },
+            createPopupContent: function(garage) {
+                let imageHtml = garage.mapImage
+                    ? `<img src="${garage.mapImage}" class="img-fluid" alt="写真">`
+                    : `<div class="no-image">No Image</div>`;
+
+                return `
+                    <table class="popup">
+                        <tbody>
+                            <tr>
+                                <td colspan="2" class="building-name">
+                                    <a href="${garage.linkUrl}" target="_blank" rel="noopener noreferrer">${garage.garageName}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="building-address">${garage.address || ''}</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="8" class="building-image">
+                                    <a href="${garage.linkUrl}" target="_blank" rel="noopener noreferrer">
+                                        ${imageHtml}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr><td class="building-item">【駐車料】${garage.garage_fee || ''}</td></tr>
+                        </tbody>
+                    </table>
+                `;
             },
             getSubParams: function() {
                 // 絞り込み条件パラメータ
