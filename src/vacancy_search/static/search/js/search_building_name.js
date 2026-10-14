@@ -7,11 +7,12 @@ Copyright (C) 2020 - 2026 Yasuhiro Yamamoto
 function createSearchBuildingNameVue(
     searchedBuildingName,
 ) {
-    return new Vue({
-        el: "#contents",
+    return Vue.createApp({
         delimiters: ["[[", "]]"],
-        data: {
-            building_name: searchedBuildingName,
+        data() {
+            return {
+                building_name: searchedBuildingName,
+            };
         },
         mounted: function(event) {
         },
@@ -20,5 +21,5 @@ function createSearchBuildingNameVue(
                 this.building_name = "";
             },
         },
-    });
+    }).mount("#contents");
 }

@@ -11,42 +11,43 @@ function createGarageSearchMapVue(
     lat,    // 緯度
     lng,    // 経度
 ) {
-    return new Vue({
-        el: "#contents",
+    return Vue.createApp({
         delimiters: ["[[", "]]"],
-        data: {
-            conditionAreaIsHidden: true,
-            maxDataCount: 100,
-            message: "",
-            key: key,       // APIデータ取得用
-            zoom: 17,
-            searchableMinZoom: 16,      // 検索可能な最小のズーム
-            isSearchable: true,
-            default_lat: lat,
-            default_lng: lng,
-            url: 'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
-            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
-            mapGarages: [],
-            garages: [],
-            lastBounds: null,
-            iconOn: L.icon({
-                iconUrl: "/static/search_map/images/car_icon_on.png",
-                iconSize: [48, 48],
-                iconAnchor: [24, 24],
-            }),
-            iconOff: L.icon({
-                iconUrl: "/static/search_map/images/car_icon_off.png",
-                iconSize: [48, 48],
-                iconAnchor: [24, 24],
-            }),
-            lowerGarageFee: 0,
-            upperGarageFee: 0,
-            onlyOwn: false,
-            forRent: false,
-            map: null,
-            markerGroup: null,
-            markersMap: {},
-            mapLoading: null,
+        data() {
+            return {
+                conditionAreaIsHidden: true,
+                maxDataCount: 100,
+                message: "",
+                key: key,       // APIデータ取得用
+                zoom: 17,
+                searchableMinZoom: 16,      // 検索可能な最小のズーム
+                isSearchable: true,
+                default_lat: lat,
+                default_lng: lng,
+                url: 'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
+                attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+                mapGarages: [],
+                garages: [],
+                lastBounds: null,
+                iconOn: L.icon({
+                    iconUrl: "/static/search_map/images/car_icon_on.png",
+                    iconSize: [48, 48],
+                    iconAnchor: [24, 24],
+                }),
+                iconOff: L.icon({
+                    iconUrl: "/static/search_map/images/car_icon_off.png",
+                    iconSize: [48, 48],
+                    iconAnchor: [24, 24],
+                }),
+                lowerGarageFee: 0,
+                upperGarageFee: 0,
+                onlyOwn: false,
+                forRent: false,
+                map: null,
+                markerGroup: null,
+                markersMap: {},
+                mapLoading: null,
+            };
         },
         mounted: function(event) {
             // マウント後の処理
@@ -301,5 +302,5 @@ function createGarageSearchMapVue(
                 this.forRent = false;
             },
         },
-    });
+    }).mount("#contents");
 }

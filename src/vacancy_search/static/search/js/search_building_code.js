@@ -7,11 +7,12 @@ Copyright (C) 2020 - 2026 Yasuhiro Yamamoto
 function createSearchBuildingCodeVue(
     searchedBuildingCode,
 ) {
-    return new Vue({
-        el: "#contents",
+    return Vue.createApp({
         delimiters: ["[[", "]]"],
-        data: {
-            building_code: searchedBuildingCode,
+        data() {
+            return {
+                building_code: searchedBuildingCode,
+            };
         },
         mounted: function(event) {
         },
@@ -20,5 +21,5 @@ function createSearchBuildingCodeVue(
                 this.building_code = "";
             },
         },
-    });
+    }).mount("#contents");
 }

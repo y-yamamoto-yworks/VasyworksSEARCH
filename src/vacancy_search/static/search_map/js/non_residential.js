@@ -11,61 +11,62 @@ function createNonResidentialSearchMapVue(
     lat,    // 緯度
     lng,    // 経度
 ) {
-    return new Vue({
-        el: "#contents",
+    return Vue.createApp({
         delimiters: ["[[", "]]"],
-        data: {
-            conditionAreaIsHidden: true,
-            maxDataCount: 100,
-            message: "",
-            key: key,       // APIデータ取得用
-            zoom: 17,
-            searchableMinZoom: 16,      // 検索可能な最小のズーム
-            isSearchable: true,
-            default_lat: lat,
-            default_lng: lng,
-            url: 'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
-            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
-            mapBuildings: [],
-            buildings: [],
-            lastBounds: null,
-            iconOn: L.icon({
-                iconUrl: "/static/search_map/images/building_icon_on.png",
-                iconSize: [48, 48],
-                iconAnchor: [24, 24],
-            }),
-            iconOff: L.icon({
-                iconUrl: "/static/search_map/images/building_icon_off.png",
-                iconSize: [48, 48],
-                iconAnchor: [24, 24],
-            }),
-            buildingTypes: [10, 20, 21, 40, 50, 51, 110, 120, 130, 140],
-            buildingAge: 0,
-            withGarage: false,
-            withBikeParking: false,
-            lowerRent: 50000,
-            upperRent: 0,
-            lowerRoomArea: 0,
-            upperRoomArea: 0,
-            directions: [1, 2, 3, 4, 5, 6, 7, 8],
-            roomFloor: 0,
-            topFloor: false,
-            aircon: false,
-            washingToilet: false,
-            deliveryBox: false,
-            autoLock: false,
-            elevator: false,
-            furnishedShop: false,
-            skeleton: false,
-            restaurant: false,
-            office: false,
-            soho: false,
-            onlyOwn: false,
-            forRent: true,
-            map: null,
-            markerGroup: null,
-            markersMap: {},
-            mapLoading: null,
+        data() {
+            return {
+                conditionAreaIsHidden: true,
+                maxDataCount: 100,
+                message: "",
+                key: key,       // APIデータ取得用
+                zoom: 17,
+                searchableMinZoom: 16,      // 検索可能な最小のズーム
+                isSearchable: true,
+                default_lat: lat,
+                default_lng: lng,
+                url: 'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
+                attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+                mapBuildings: [],
+                buildings: [],
+                lastBounds: null,
+                iconOn: L.icon({
+                    iconUrl: "/static/search_map/images/building_icon_on.png",
+                    iconSize: [48, 48],
+                    iconAnchor: [24, 24],
+                }),
+                iconOff: L.icon({
+                    iconUrl: "/static/search_map/images/building_icon_off.png",
+                    iconSize: [48, 48],
+                    iconAnchor: [24, 24],
+                }),
+                buildingTypes: [10, 20, 21, 40, 50, 51, 110, 120, 130, 140],
+                buildingAge: 0,
+                withGarage: false,
+                withBikeParking: false,
+                lowerRent: 50000,
+                upperRent: 0,
+                lowerRoomArea: 0,
+                upperRoomArea: 0,
+                directions: [1, 2, 3, 4, 5, 6, 7, 8],
+                roomFloor: 0,
+                topFloor: false,
+                aircon: false,
+                washingToilet: false,
+                deliveryBox: false,
+                autoLock: false,
+                elevator: false,
+                furnishedShop: false,
+                skeleton: false,
+                restaurant: false,
+                office: false,
+                soho: false,
+                onlyOwn: false,
+                forRent: true,
+                map: null,
+                markerGroup: null,
+                markersMap: {},
+                mapLoading: null,
+            };
         },
         mounted: function(event) {
             // マウント後の処理
@@ -373,5 +374,5 @@ function createNonResidentialSearchMapVue(
                 this.forRent = true;
             },
         },
-    });
+    }).mount("#contents");
 }
