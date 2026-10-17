@@ -397,7 +397,7 @@ class Building(models.Model):
     @property
     def all_rooms(self):
         if not self.auth_user:
-            raise Exception
+            raise ValueError("Value error: auth_user")
 
         return self.rooms.order_by('room_no', 'id').all()
 
