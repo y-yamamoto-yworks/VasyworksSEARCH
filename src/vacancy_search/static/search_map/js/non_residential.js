@@ -11,6 +11,10 @@ function createNonResidentialSearchMapVue(
     lat,    // 緯度
     lng,    // 経度
 ) {
+    if (key) {
+        axios.defaults.headers.common['X-Api-Key'] = key;
+    }
+
     return Vue.createApp({
         delimiters: ["[[", "]]"],
         data() {
@@ -198,7 +202,7 @@ function createNonResidentialSearchMapVue(
                     let subParams = this.getSubParams();
                     if(subParams !== "") params += subParams;
 
-                    let apiUrl = `/api/non_residential_buildings/${this.key}/?limit=${this.maxDataCount}&` + params
+                    let apiUrl = `/api/non_residential_buildings/?limit=${this.maxDataCount}&` + params
                     axios.get(apiUrl)
                         .then(function(res) {
                             that.message = ""

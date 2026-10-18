@@ -11,6 +11,10 @@ function createGarageSearchMapVue(
     lat,    // 緯度
     lng,    // 経度
 ) {
+    if (key) {
+        axios.defaults.headers.common['X-Api-Key'] = key;
+    }
+
     return Vue.createApp({
         delimiters: ["[[", "]]"],
         data() {
@@ -179,7 +183,7 @@ function createGarageSearchMapVue(
                     let subParams = this.getSubParams();
                     if(subParams !== "") params += subParams;
 
-                    let apiUrl = `/api/garages/${this.key}/?limit=${this.maxDataCount}&` + params
+                    let apiUrl = `/api/garages/?limit=${this.maxDataCount}&` + params
                     axios.get(apiUrl)
                         .then(function(res) {
                             that.message = ""

@@ -22,99 +22,106 @@ class MapSearchNonResidentialViewSetTest(TestCase):
         self.client = Client()
         self.company = Company.objects.get(pk=settings.COMPANY_ID)
 
+        response = self.client.post(
+            reverse('login'),
+            {'username': 't-kanri', 'password': 'guest1234'},
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+
     def test_get_view_set(self):
         url = reverse(
             'search_non_residential_buildings',
-            args=[
-                ApiHelper.get_key(),
-            ],
         )
         url += "?north=35.049928&south=35.049926&east=135.76684&west=135.76682"
-        response = self.client.get(url)
+        response = self.client.get(url, HTTP_X_API_KEY=ApiHelper.get_key())
         self.assertEqual(response.status_code, 200)
         building_list = response.data['list']
         self.assertEqual(building_list[0]['building_name'], '表示項目確認用マンション')
+
+        response_invalid = self.client.get(url, HTTP_X_API_KEY='AABBCCDDEEFF')
+        self.assertEqual(response_invalid.status_code, 403)
 
     def test_get_view_set_with_rent(self):
         url = reverse(
             'search_non_residential_buildings',
-            args=[
-                ApiHelper.get_key(),
-            ],
         )
         url += "?north=35.049928&south=35.049926&east=135.76684&west=135.76682"
         url += "&l_rnt=100000&u_rnt=200000"
-        response = self.client.get(url)
+        response = self.client.get(url, HTTP_X_API_KEY=ApiHelper.get_key())
         self.assertEqual(response.status_code, 200)
         building_list = response.data['list']
         self.assertEqual(building_list[0]['building_name'], '表示項目確認用マンション')
+
+        response_invalid = self.client.get(url, HTTP_X_API_KEY='AABBCCDDEEFF')
+        self.assertEqual(response_invalid.status_code, 403)
 
     def test_get_view_set_with_rent_no_data(self):
         url = reverse(
             'search_non_residential_buildings',
-            args=[
-                ApiHelper.get_key(),
-            ],
         )
         url += "?north=35.049928&south=35.049926&east=135.76684&west=135.76682"
         url += "&l_rnt=50000&u_rnt=100000"
-        response = self.client.get(url)
+        response = self.client.get(url, HTTP_X_API_KEY=ApiHelper.get_key())
         self.assertEqual(response.status_code, 200)
         list_count = response.data['count']
         self.assertEqual(list_count, 0)
+
+        response_invalid = self.client.get(url, HTTP_X_API_KEY='AABBCCDDEEFF')
+        self.assertEqual(response_invalid.status_code, 403)
 
     def test_get_view_set_with_room_area(self):
         url = reverse(
             'search_non_residential_buildings',
-            args=[
-                ApiHelper.get_key(),
-            ],
         )
         url += "?north=35.049928&south=35.049926&east=135.76684&west=135.76682"
         url += "&l_ra=40&u_ra=50"
-        response = self.client.get(url)
+        response = self.client.get(url, HTTP_X_API_KEY=ApiHelper.get_key())
         self.assertEqual(response.status_code, 200)
         building_list = response.data['list']
         self.assertEqual(building_list[0]['building_name'], '表示項目確認用マンション')
+
+        response_invalid = self.client.get(url, HTTP_X_API_KEY='AABBCCDDEEFF')
+        self.assertEqual(response_invalid.status_code, 403)
 
     def test_get_view_set_with_room_area_no_data(self):
         url = reverse(
             'search_non_residential_buildings',
-            args=[
-                ApiHelper.get_key(),
-            ],
         )
         url += "?north=35.049928&south=35.049926&east=135.76684&west=135.76682"
         url += "&l_ra=20&u_ra=25"
-        response = self.client.get(url)
+        response = self.client.get(url, HTTP_X_API_KEY=ApiHelper.get_key())
         self.assertEqual(response.status_code, 200)
         list_count = response.data['count']
         self.assertEqual(list_count, 0)
+
+        response_invalid = self.client.get(url, HTTP_X_API_KEY='AABBCCDDEEFF')
+        self.assertEqual(response_invalid.status_code, 403)
 
     def test_get_view_set_with_layout(self):
         url = reverse(
             'search_residential_buildings',
-            args=[
-                ApiHelper.get_key(),
-            ],
         )
         url += "?north=35.049928&south=35.049926&east=135.76684&west=135.76682"
         url += "&lay=20,30"
-        response = self.client.get(url)
+        response = self.client.get(url, HTTP_X_API_KEY=ApiHelper.get_key())
         self.assertEqual(response.status_code, 200)
         building_list = response.data['list']
         self.assertEqual(building_list[0]['building_name'], '表示項目確認用マンション')
 
+        response_invalid = self.client.get(url, HTTP_X_API_KEY='AABBCCDDEEFF')
+        self.assertEqual(response_invalid.status_code, 403)
+
     def test_get_view_set_with_layout_no_data(self):
         url = reverse(
             'search_residential_buildings',
-            args=[
-                ApiHelper.get_key(),
-            ],
         )
         url += "?north=35.049928&south=35.049926&east=135.76684&west=135.76682"
         url += "&lay=10,20"
-        response = self.client.get(url)
+        response = self.client.get(url, HTTP_X_API_KEY=ApiHelper.get_key())
         self.assertEqual(response.status_code, 200)
         list_count = response.data['count']
         self.assertEqual(list_count, 0)
+
+        response_invalid = self.client.get(url, HTTP_X_API_KEY='AABBCCDDEEFF')
+        self.assertEqual(response_invalid.status_code, 403)
