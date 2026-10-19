@@ -102,7 +102,9 @@ class MapSearchGarageConditions(object):
         if xint(self.garage_fee_lower) > 0:
             if ans:
                 ans += ' AND '
-            ans = '(building.garage_fee_lower >= %(garage_fee_lower)s'
+            else:
+                ans = ''
+            ans += '(building.garage_fee_lower >= %(garage_fee_lower)s'
             ans += ' OR building.garage_fee_upper >= %(garage_fee_lower)s)'
             params['garage_fee_lower'] = xint(self.garage_fee_lower)
         return ans

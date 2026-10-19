@@ -395,7 +395,7 @@ class MapSearchBuilding(models.Model):
         if conditions:
             ans += cls.__and_condition_sql(conditions.get_latlng_sql(params=params), ans)
             ans += cls.__and_condition_sql(conditions.get_building_types_sql(params=params), ans)
-            ans += cls.__and_condition_sql(conditions.get_building_age_sql(), ans)
+            ans += cls.__and_condition_sql(conditions.get_building_age_sql(params=params), ans)
             ans += cls.__and_condition_sql(conditions.get_with_garage_sql(), ans)
             ans += cls.__and_condition_sql(conditions.get_with_bike_parking_sql(), ans)
 

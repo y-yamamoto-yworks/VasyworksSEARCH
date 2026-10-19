@@ -120,7 +120,7 @@ function createGarageSearchMapVue(
             },
             submitConditions: function(event) {
                 if(this.isSearchable && this.lastBounds) {
-                    this.mapGarages = [];
+                    this.clearAllMarkers();
                     this.searchGarages(this.lastBounds);
                 }
             },

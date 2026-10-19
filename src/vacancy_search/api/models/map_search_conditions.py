@@ -515,16 +515,15 @@ class MapSearchConditions(object):
             ans = 'building.building_type_id IN ({0})'.format(targets)
         return ans
 
-    def get_building_age_sql(self):
+    def get_building_age_sql(self, params):
         """築年数"""
         ans = None
         if xint(self.building_age) > 0:
-            build_year = datetime.date.today().year - self.building_age
-            build_month = datetime.date.today().month
-            ans = '(building.build_year > {0} OR building.build_year = {0} AND building.build_month > {1})'.format(
-                build_year,
-                build_month,
-            )
+            params['build_year'] = datetime.date.today().year - xint(self.building_age)
+            params['build_month'] = datetime.date.today().month
+            ans = ('(building.build_year > %(build_year)s '
+                   'OR (building.build_year = %(build_year)s AND building.build_month > %(build_month)s))')
+
         return ans
 
     def get_with_garage_sql(self):
@@ -551,24 +550,29 @@ class MapSearchConditions(object):
 
     def get_rent_sql(self, params):
         """賃料・共益費含む"""
-        ans = None
+        conditions = []
         if self.include_condo_fees:
             if xint(self.rent_lower) > 0:
-                ans = '(room.condo_fees_type_id = 10 AND (room.rent + room.condo_fees) >= %(rent_lower)s'
-                ans += ' OR room.condo_fees_type_id != 10 AND room.rent >= %(rent_lower)s)'
+                conditions.append(
+                    '(room.condo_fees_type_id = 10 AND (room.rent + room.condo_fees) >= %(rent_lower)s'
+                    ' OR room.condo_fees_type_id != 10 AND room.rent >= %(rent_lower)s)'
+                )
                 params['rent_lower'] = self.rent_lower
             if xint(self.rent_upper) > 0:
-                ans = '(room.condo_fees_type_id = 10 AND (room.rent + room.condo_fees) <= %(rent_upper)s'
-                ans += ' OR room.condo_fees_type_id != 10 AND room.rent <= %(rent_upper)s)'
+                conditions.append(
+                    '(room.condo_fees_type_id = 10 AND (room.rent + room.condo_fees) <= %(rent_upper)s'
+                    ' OR room.condo_fees_type_id != 10 AND room.rent <= %(rent_upper)s)'
+                )
                 params['rent_upper'] = self.rent_upper
         else:
             if xint(self.rent_lower) > 0:
-                ans = 'room.rent >= %(rent_lower)s'
+                conditions.append('room.rent >= %(rent_lower)s')
                 params['rent_lower'] = self.rent_lower
             if xint(self.rent_upper) > 0:
-                ans = 'room.rent <= %(rent_upper)s'
+                conditions.append('room.rent <= %(rent_upper)s')
                 params['rent_upper'] = self.rent_upper
-        return ans
+
+        return  ' AND '.join(conditions) if conditions else None
 
     def get_free_rent_sql(self):
         """フリーレント有り"""
@@ -599,14 +603,15 @@ class MapSearchConditions(object):
 
     def get_room_area_sql(self, params):
         """専有面積"""
-        ans = None
+        conditions = []
         if xint(self.room_area_lower) > 0:
-            ans = 'room.room_area >= %(room_area_lower)s'
+            conditions.append('room.room_area >= %(room_area_lower)s')
             params['room_area_lower'] = self.room_area_lower
         if xint(self.room_area_upper) > 0:
-            ans = 'room.room_area <= %(room_area_upper)s'
+            conditions.append('room.room_area <= %(room_area_upper)s')
             params['room_area_upper'] = self.room_area_upper
-        return ans
+
+        return ' AND '.join(conditions) if conditions else None
 
     def get_only_first_floor_sql(self):
         """1階のみ"""

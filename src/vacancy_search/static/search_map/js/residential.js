@@ -148,7 +148,7 @@ function createResidentialSearchMapVue(
             },
             submitConditions: function(event) {
                 if(this.isSearchable && this.lastBounds) {
-                    this.mapBuildings = [];
+                    this.clearAllMarkers();
                     this.searchBuildings(this.lastBounds);
                 }
             },
